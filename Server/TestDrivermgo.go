@@ -14,6 +14,7 @@ type Users struct {
 }
 
 func main() {
+	//Agregar las credenciales, con el usuario asignado a la BD lushflydb
 	session, err := mgo.Dial("mongodb://usuario:contrasena@ds149324.mlab.com:49324/lushflydb")
 	if err != nil {
 			panic(err)
