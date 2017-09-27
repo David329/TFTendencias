@@ -1,0 +1,5 @@
+//preguntar las credenciales d donlusho
+go get github.com/gorilla/pat //pa instalar el enrutador q servira pa hacer el restlusho
+go get gopkg.in/mgo.v2 //pa instalar el driver de mongito
+
+//pa ver el intellisense, necesitamos setear el goroot y gopath en user settings de file preferences, pa verlo:  go env
