@@ -46,3 +46,20 @@
 		}
 	]
 }
+
+//Users
+{
+    "firstname": "ffffcsdsd",
+    "lastname": "xtuki",
+    "passporttype": "DNI",
+    "passportnumber": "434",
+    "email": "david@gmail.com",
+    "password": "iksdi",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "2323",
+        "csc": "2232323",
+        "total": 2332,
+        "expirationdate": "23/21/1923"
+    }
+}

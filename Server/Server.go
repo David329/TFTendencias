@@ -9,63 +9,41 @@ import (
     "net/http"
     "encoding/json"
     "io/ioutil"
+    Entities "./Entities"
 
     "github.com/gorilla/pat"
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson" //bson para formato como select where balblala, chekar la documentacion
 )
-type Seat struct {
-    UserID string
-    Number string
-    Type string
+
+func getDbSession()(*mgo.Session){
+    //creacion conexion con mlab, con driver mgo
+    session, err:= mgo.Dial("mongodb://userdb:passdb@ds149324.mlab.com:49324/lushflydb")
+    if err != nil {
+        log.Print(err)
+    }
+    session.SetMode(mgo.Monotonic, true)
+    return session
 }
-type Departure struct {
-    Country string
-    City string
-    TD string //departure, tndria q ser un dateTime
-    TA string //arrival, tndria q ser un dateTime
-}
-type Destination struct {
-    Country string
-    City string
-    TD string //departure, tndria q ser un dateTime
-    TA string //arrival, tndria q ser un dateTime	
-}
-type Flights struct {
-    AirplaneModel string
-    AirplaneNumber string
-    Price float32
-    Depart Departure
-    Destin Destination
-    Seats[] Seat
-}
-//asociar payment, usuario y reserva
-type Payment struct {
-    Card string
-    CardNumber string
-    CSC string
-    Total float32
-    ExpirationDate string //format=(dd/mm/yyyy)
-}
-type Users struct {
-    FirstName string
-    LastName string
-    PassportType string
-    PassportNumber string
-    Email string
-    Password string
-    PersonalCard Payment
+func sendResCloseSession(message string, session mgo.Session, wr http.ResponseWriter)(){
+    //formato de envio
+    wr.Header().Set("Content-Type", "application/json")
+
+    //estado web
+    wr.WriteHeader(http.StatusOK)
+
+    //envio del json a la ruta
+    json.NewEncoder(wr).Encode(message)
+    session.Close()
 }
 
 //FLIGHTS
 func postFlights(wr http.ResponseWriter, req *http.Request) {
 
-    //creacion conexion con mlab, con driver mgo
-    session, err:= mgo.Dial("mongodb://userdb:passworddb@ds149324.mlab.com:49324/lushflydb")
-    session.SetMode(mgo.Monotonic, true)
+    session:= getDbSession()
 
     //obtener el json y lo guardo en body
-    var obj Flights
+    var obj Entities.Flights
     body, err:= ioutil.ReadAll(req.Body)
     if err != nil {
         log.Print(err)
@@ -81,21 +59,16 @@ func postFlights(wr http.ResponseWriter, req *http.Request) {
         log.Fatal(err)
     }
 
-    //respuesta
-    wr.Header().Set("Content-Type", "application/json")
-    wr.WriteHeader(http.StatusOK)
-    json.NewEncoder(wr).Encode("Obj inserted...")
+    sendResCloseSession("Objeto Insertado",*session,wr)
 }
 //IMPORTANTE ESTE UPDATE NOS PODRIA SERVIR PARA ATRIBUTOS DEL VUELO, NO PARA ACTUALIZAR LOS ASIENTOS OK...
 //PARA ACTUALIZAR LOS ASIENTOS DEBEMOS OBTENER EL USUARIO Y OBTENER EL OBJETO DEL VUELO Y LUEGO AGREGAR Y CONECTAR EN ASIENTOS DE FLIGHT
-func putFlights(wr http.ResponseWriter, req *http.Request) {
+func putFlightsById(wr http.ResponseWriter, req *http.Request) {
 
-    //creacion conexion con mlab, con driver mgo
-    session, err:= mgo.Dial("mongodb://userdb:passworddb@ds149324.mlab.com:49324/lushflydb")
-    session.SetMode(mgo.Monotonic, true)
+    session:= getDbSession()
 
     //obtener el json y lo guardo en body
-    var obj Flights
+    var obj Entities.Flights
     body, err:= ioutil.ReadAll(req.Body)
     if err != nil {
         log.Print(err)
@@ -123,23 +96,18 @@ func putFlights(wr http.ResponseWriter, req *http.Request) {
         panic(err)
     }
 
-    //respuesta
-    wr.Header().Set("Content-Type", "application/json")
-    wr.WriteHeader(http.StatusOK)
-    json.NewEncoder(wr).Encode("Actualizacion Exitosa")
+    sendResCloseSession("Actualizacion Exitosa",*session,wr)
 }
 
 //USERS
 func getAllUsers(wr http.ResponseWriter, req * http.Request) {
 
-    //creacion conexion con mlab, con driver mgo
-    session, err:= mgo.Dial("mongodb://userdb:passworddb@ds149324.mlab.com:49324/lushflydb")
-    session.SetMode(mgo.Monotonic, true)
+    session:= getDbSession()
 
     //Pa' Obtener
-    var users[] Users
+    var users[] Entities.Users
     c:= session.DB("lushflydb").C("Users")
-    err = c.Find(nil).Sort("-start").All(&users) //es opcional el sort
+    err:= c.Find(nil).Sort("-start").All(&users) //es opcional el sort
     if err != nil {
         panic(err)
     }
@@ -154,14 +122,24 @@ func getAllUsers(wr http.ResponseWriter, req * http.Request) {
         return
     }
 
-    //Formato Json a mostrar
-    wr.Header().Set("Content-Type", "application/json")
+    sendResCloseSession(string(data),*session,wr)
+}
+func deleteUsersById(wr http.ResponseWriter, req * http.Request) {
 
-    //estado web
-    wr.WriteHeader(http.StatusOK)
+    session:= getDbSession()
 
-    //envio del json a la ruta
-    json.NewEncoder(wr).Encode(string(data))
+    //obtener el id desde la url
+	reqId:= req.URL.Query().Get(":id")
+
+    //obtener solo los q tienen ese id
+	c:= session.DB("lushflydb").C("Users")
+    err:= c.RemoveId(bson.ObjectIdHex(reqId))
+    
+    if err != nil {
+        panic(err)
+    }
+
+    sendResCloseSession("Eliminacion Exitosa",*session,wr)
 }
 
 func main() {
@@ -170,8 +148,9 @@ func main() {
 
     //llamada de metodos a enrutar
     router.Get("/users", getAllUsers)
+    router.Delete("/users/{id}", deleteUsersById)
     router.Post("/flights", postFlights)
-    router.Put("/flights/{id}", putFlights)
+    router.Put("/flights/{id}", putFlightsById)
 
     //activar entutador, probar a;adirlo en otro archivo...
     http.Handle("/", router)
