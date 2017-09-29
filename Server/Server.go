@@ -3,7 +3,8 @@
 //http://www.jancarloviray.com/blog/go-mongodb-simple-example/
 //PREGUNTAR LAS CREDENCIALES DE USUARIO DE BASE DE DATOS
 package main
-
+//MEJORAR:
+//  1. Pasar los parametros como direccion de memoria, para eliminar la sesion y variables
 import (
     "log"
     "net/http"
