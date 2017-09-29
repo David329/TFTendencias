@@ -1,0 +1,48 @@
+//para Flights
+{
+	"AirplaneModel": "sadasdusho",
+	"AirplaneNumber": "2213",
+	"Price": 32432,
+	"Depart": {
+		"Country": "peru",
+		"City": "Lima",
+		"TD": "12:20",
+		"TA": "22:20"
+	},
+	"Destin": {
+		"Country": "Colombia",
+		"City": "Cali",
+		"TD": "11:20",
+		"TA": "21:20"
+	}
+}
+//Flights con 2 asientos
+{
+	"AirplaneModel": "sadasdusho",
+	"AirplaneNumber": "2213",
+	"Price": 32432,
+	"Depart": {
+		"Country": "peru",
+		"City": "Lima",
+		"TD": "12:20",
+		"TA": "22:20"
+	},
+	"Destin": {
+		"Country": "Colombia",
+		"City": "Cali",
+		"TD": "11:20",
+		"TA": "21:20"
+	},
+	"seats": [
+		{
+			"UserID": "ABC",
+			"Number": "2A",
+			"Type": "Full"
+		},
+		{
+			"UserID": "BBB",
+			"Number": "32A",
+			"Type": "Full"
+		}
+	]
+}
