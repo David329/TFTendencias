@@ -41,31 +41,66 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request) {
 }
 
 //PostBooking Inserta un nuevo vuelo
-func PostBooking(wr http.ResponseWriter, req *http.Request) { //pensar como haremos la reserva para actualizar el asiento en flight.
-
-	//chekar si el array de asiento de flight es menoroigual de 30
-	//actualizar flight en asiento
-	//actualizar el payment del usuario
+func PostBooking(wr http.ResponseWriter, req *http.Request) {
 	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
-	var obj Entities.Booking
+	var booking Entities.Booking
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		log.Print(err)
 	}
 
 	//parseo de json a Booking, nose si parsea mas de 1 objeto..., seguro con un for o algo
-	json.Unmarshal(body, &obj)
+	json.Unmarshal(body, &booking)
 
-	//inserto en la bd
-	c := session.DB("lushflydb").C("Bookings")
-	err = c.Insert(obj)
+	//Obtenemos el objeto flight de la reserva, para actualizar su asiento del usuario
+	var flight Entities.Flight
+	c := session.DB("lushflydb").C("Flights")
+	err = c.FindId(bson.ObjectIdHex(booking.FlightID)).One(&flight)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+	//chekar si esta en el limite de asientos
+	if len(flight.Seats) <= 30 {
 
-	DB.SendResCloseSession("Objeto Insertado", session, wr)
+		//agregamos el asiento final a la lista de asientos
+		flight.Seats = append(flight.Seats, booking.PersonalSeat)
+
+		//actualizamos los asientos en el vuelo
+		err = c.UpdateId(bson.ObjectIdHex(booking.FlightID), flight)
+		if err != nil {
+			panic(err)
+		}
+
+		//Obtenemos el objeto user de la reserva, para actualizar su monto total
+		var user Entities.User
+		c = session.DB("lushflydb").C("Users")
+		err = c.FindId(bson.ObjectIdHex(booking.UserID)).One(&user)
+		if err != nil {
+			panic(err)
+		}
+
+		//restamos el monto total por la reserva
+		user.PersonalCard.Total -= flight.Price
+
+		//actualizamos el monto total del usuario
+		err = c.UpdateId(bson.ObjectIdHex(booking.UserID), user)
+		if err != nil {
+			panic(err)
+		}
+
+		//inserto en la bd de Reservas
+		c := session.DB("lushflydb").C("Bookings")
+		err = c.Insert(booking)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		DB.SendResCloseSession("Reserva Completada", session, wr)
+	} else {
+		DB.SendResCloseSession("Este Vuelo esta lleno, Max 30 Asientos!!!", session, wr)
+	}
 }
 
 //PutBookingByID Actualiza un Documento Booking

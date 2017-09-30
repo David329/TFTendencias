@@ -63,3 +63,14 @@
         "expirationdate": "23/21/1923"
     }
 }
+
+//Bookings
+{
+    "userid": "59cf2dc2f36d286c005cbf61",
+    "flightid": "59cc07ed6422e813bfcebb70",
+    "personalseat": {
+        "UserID": "59cf2dc2f36d286c005cbf61",
+        "Number": "33A",
+        "Type": "full"
+    }
+}
