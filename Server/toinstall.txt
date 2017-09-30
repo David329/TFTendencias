@@ -7,5 +7,7 @@ go get gopkg.in/mgo.v2 //pa instalar el driver de mongito
 
 //pa correrlo
 0. cd Server/
-1. go run Server.go
+1. go run Server.go //esto correra en 3 gorutinas: 1 Levantara el servidor, y 2 escucharan las colas
 2. utilizar un RestFul pluggin de navegador pa testear los verbos y sus funcionalidades
+3. cd Test/SendDotNet/Send1 o Send2
+4. dotnet run enviar mensajes y ver q el servidor de go workee
