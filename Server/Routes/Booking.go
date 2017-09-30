@@ -1,6 +1,6 @@
 package routes
 
-//Restful - Flight
+//Restful - Booking
 import (
 	"encoding/json"
 	"io/ioutil"
@@ -9,21 +9,20 @@ import (
 
 	DB "../DB"
 	Entities "../Entities"
-
 	"gopkg.in/mgo.v2/bson"
 )
 
 //Get-Post-Put-Delete
 
-//GetAllFlight Envia todos los vuelos, formato->JSON
-func GetAllFlight(wr http.ResponseWriter, req *http.Request) {
+//GetAllBooking Envia todos las reservar, formato->JSON
+func GetAllBooking(wr http.ResponseWriter, req *http.Request) {
 
 	session := DB.GetDbSession() //en mayusculas pa q sea publico
 
 	//Pa' Obtener
-	var flights []Entities.Flight
-	c := session.DB("lushflydb").C("Flights")
-	err := c.Find(nil).Sort("-start").All(&flights) //es opcional el sort
+	var bookings []Entities.Booking
+	c := session.DB("lushflydb").C("Bookings")
+	err := c.Find(nil).Sort("-start").All(&bookings) //es opcional el sort
 	if err != nil {
 		panic(err)
 	}
@@ -32,7 +31,7 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request) {
 	session.Close()
 
 	//parseamos a json
-	data, err := json.Marshal(flights)
+	data, err := json.Marshal(bookings)
 	if err != nil {
 		log.Print(err)
 		return
@@ -41,23 +40,26 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request) {
 	DB.SendResCloseSession(string(data), session, wr)
 }
 
-//PostFlight Inserta un nuevo vuelo
-func PostFlight(wr http.ResponseWriter, req *http.Request) {
+//PostBooking Inserta un nuevo vuelo
+func PostBooking(wr http.ResponseWriter, req *http.Request) { //pensar como haremos la reserva para actualizar el asiento en flight.
 
+	//chekar si el array de asiento de flight es menoroigual de 30
+	//actualizar flight en asiento
+	//actualizar el payment del usuario
 	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
-	var obj Entities.Flight
+	var obj Entities.Booking
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		log.Print(err)
 	}
 
-	//parseo de json a flight, nose si parsea mas de 1 objeto..., seguro con un for o algo
+	//parseo de json a Booking, nose si parsea mas de 1 objeto..., seguro con un for o algo
 	json.Unmarshal(body, &obj)
 
 	//inserto en la bd
-	c := session.DB("lushflydb").C("Flights")
+	c := session.DB("lushflydb").C("Bookings")
 	err = c.Insert(obj)
 	if err != nil {
 		log.Fatal(err)
@@ -66,36 +68,27 @@ func PostFlight(wr http.ResponseWriter, req *http.Request) {
 	DB.SendResCloseSession("Objeto Insertado", session, wr)
 }
 
-//PutFlightByID Actualiza un Documento Flight
-func PutFlightByID(wr http.ResponseWriter, req *http.Request) {
+//PutBookingByID Actualiza un Documento Booking
+func PutBookingByID(wr http.ResponseWriter, req *http.Request) { //pensar si es correcto...
 
 	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
-	var obj Entities.Flight
+	var obj Entities.Booking
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		log.Print(err)
 	}
 
-	//parseo de json a flight
+	//parseo de json a Booking
 	json.Unmarshal(body, &obj)
 
 	//obtener el id desde la url
 	reqID := req.URL.Query().Get(":id")
 
 	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Flights")
+	c := session.DB("lushflydb").C("Bookings")
 	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
-
-	////tmb se puede modificar asi, solo atributos
-	// err = c.UpdateId(bson.ObjectIdHex(reqID), bson.M {
-	//         "$set": bson.M {
-	//             "airplanemodel": "uptddsds"
-	//         }
-	// 	})
-
-	//err= c.FindId(bson.ObjectIdHex(reqID)).Sort("-start").One(&obj)//asi obtenemos un objeto
 	if err != nil {
 		panic(err)
 	}
@@ -103,8 +96,8 @@ func PutFlightByID(wr http.ResponseWriter, req *http.Request) {
 	DB.SendResCloseSession("Actualizacion Exitosa", session, wr)
 }
 
-//DeleteFlightByID Elimina un usuario por ID, formato->JSON
-func DeleteFlightByID(wr http.ResponseWriter, req *http.Request) {
+//DeleteBookingByID Elimina un usuario por ID, formato->JSON
+func DeleteBookingByID(wr http.ResponseWriter, req *http.Request) {
 
 	session := DB.GetDbSession()
 
@@ -112,7 +105,7 @@ func DeleteFlightByID(wr http.ResponseWriter, req *http.Request) {
 	reqID := req.URL.Query().Get(":id")
 
 	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Flights")
+	c := session.DB("lushflydb").C("Bookings")
 	err := c.RemoveId(bson.ObjectIdHex(reqID))
 
 	if err != nil {

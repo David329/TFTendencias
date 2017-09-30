@@ -1,7 +1,8 @@
 package entities
 
+// Seat Entitie.
 type Seat struct {
-    UserID string
-    Number string
-    Type string
+	UserID string
+	Number string
+	Type   string
 }
