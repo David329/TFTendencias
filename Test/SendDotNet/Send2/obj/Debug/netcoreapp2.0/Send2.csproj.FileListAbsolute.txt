@@ -1,0 +1,10 @@
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\bin\Debug\netcoreapp2.0\Send2.deps.json
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\bin\Debug\netcoreapp2.0\Send2.runtimeconfig.json
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\bin\Debug\netcoreapp2.0\Send2.runtimeconfig.dev.json
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\bin\Debug\netcoreapp2.0\Send2.dll
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\bin\Debug\netcoreapp2.0\Send2.pdb
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\obj\Debug\netcoreapp2.0\Send2.csproj.CoreCompileInputs.cache
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\obj\Debug\netcoreapp2.0\Send2.AssemblyInfoInputs.cache
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\obj\Debug\netcoreapp2.0\Send2.AssemblyInfo.cs
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\obj\Debug\netcoreapp2.0\Send2.dll
+C:\Users\David\Videos\TF\Test\SendDotNet\Send2\obj\Debug\netcoreapp2.0\Send2.pdb
