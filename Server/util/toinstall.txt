@@ -1,0 +1,15 @@
+//Necesitamos setear el goroot y gopath en user settings de file preferences, pa verlo:  go env
+
+//Instalar los siguientes paquetes
+go get github.com/streadway/amqp //pa instalar el message broker
+go get gopkg.in/mgo.v2 //pa instalar el driver de mongito
+go get gopkg.in/mgo.v2/bson //pa instalar el json binario q nos servira parsear algunas consultas
+go get github.com/julienschmidt/httprouter //pa instalar el enrutador
+
+//Pa ver el intellisense, tenemos q instalar goreturn, en un archivo go presionar: Ctrl+Alt+F, Install ALL
+
+//Pa correrlo
+ejecutar el archivo run.sh(linux, en windows con gitbash): ./run.sh
+	si no funciona por permisos, otorgarle de la siguiente manera:chmod +x ./run.sh
+	si no funciona por paquetes, instalarlos como se menciona arriba
+	si no funciona por credenciales de BD, preguntar e incorporarlas en /Server/src/DB/Access.go

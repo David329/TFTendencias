@@ -14,7 +14,7 @@ import (
 
 	Routes "./Routes"
 
-	"github.com/gorilla/pat"
+	"github.com/julienschmidt/httprouter"
 	"github.com/streadway/amqp"
 )
 
@@ -104,32 +104,29 @@ func main() {
 
 	listenServer := func() {
 		//creacion de enrutador pat
-		router := pat.New()
+		router := httprouter.New()
 
 		//Enrutadores-User
-		router.Get("/users", Routes.GetAllUser)
-		router.Post("/users", Routes.PostUser)
-		router.Put("/users/{id}", Routes.PutUserByID)
-		router.Delete("/users/{id}", Routes.DeleteUserByID)
+		router.GET("/users", Routes.GetAllUser)
+		router.POST("/users", Routes.PostUser)
+		router.PUT("/users/:id", Routes.PutUserByID)
+		router.DELETE("/users/:id", Routes.DeleteUserByID)
 
 		//Enrutadores-Flight
-		router.Get("/flights", Routes.GetAllFlight)
-		router.Post("/flights", Routes.PostFlight)
-		router.Put("/flights/{id}", Routes.PutFlightByID)
-		router.Delete("/flights/{id}", Routes.DeleteFlightByID)
+		router.GET("/flights", Routes.GetAllFlight)
+		router.POST("/flights", Routes.PostFlight)
+		router.PUT("/flights/:id", Routes.PutFlightByID)
+		router.DELETE("/flights/:id", Routes.DeleteFlightByID)
 
 		//Enrutadores-Booking
-		router.Get("/bookings", Routes.GetAllBooking)
-		router.Post("/bookings", Routes.PostBooking)
-		router.Put("/bookings/{id}", Routes.PutBookingByID)
-		router.Delete("/bookings/{id}", Routes.DeleteBookingByID)
-
-		//Enrutador Pat
-		http.Handle("/", router)
+		router.GET("/bookings", Routes.GetAllBooking)
+		router.POST("/bookings", Routes.PostBooking)
+		router.PUT("/bookings/:id", Routes.PutBookingByID)
+		router.DELETE("/bookings/:id", Routes.DeleteBookingByID)
 
 		//Escuchando el servidor
 		log.Print("Escuchando en 127.0.0.1:8000...")
-		log.Fatal(http.ListenAndServe(":8000", nil))
+		http.ListenAndServe(":8000", router)
 	}
 
 	Parallelize(listenFirstChannel, listenSecondChannel, listenServer)

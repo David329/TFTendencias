@@ -9,13 +9,15 @@ import (
 
 	DB "../DB"
 	Entities "../Entities"
+	"github.com/julienschmidt/httprouter"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
 //Get-Post-Put-Delete
 
 //GetAllBooking Envia todos las reservar, formato->JSON
-func GetAllBooking(wr http.ResponseWriter, req *http.Request) {
+func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	session := DB.GetDbSession() //en mayusculas pa q sea publico
 
@@ -41,7 +43,7 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request) {
 }
 
 //PostBooking Inserta un nuevo vuelo
-func PostBooking(wr http.ResponseWriter, req *http.Request) {
+func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
@@ -104,7 +106,7 @@ func PostBooking(wr http.ResponseWriter, req *http.Request) {
 }
 
 //PutBookingByID Actualiza un Documento Booking
-func PutBookingByID(wr http.ResponseWriter, req *http.Request) { //pensar si es correcto...
+func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) { //pensar si es correcto...
 
 	session := DB.GetDbSession()
 
@@ -119,7 +121,7 @@ func PutBookingByID(wr http.ResponseWriter, req *http.Request) { //pensar si es 
 	json.Unmarshal(body, &obj)
 
 	//obtener el id desde la url
-	reqID := req.URL.Query().Get(":id")
+	reqID := ps.ByName("id")
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Bookings")
@@ -132,12 +134,12 @@ func PutBookingByID(wr http.ResponseWriter, req *http.Request) { //pensar si es 
 }
 
 //DeleteBookingByID Elimina un usuario por ID, formato->JSON
-func DeleteBookingByID(wr http.ResponseWriter, req *http.Request) {
+func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 	session := DB.GetDbSession()
 
 	//obtener el id desde la url
-	reqID := req.URL.Query().Get(":id")
+	reqID := ps.ByName("id")
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Bookings")
