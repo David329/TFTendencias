@@ -14,7 +14,7 @@ fi
 cd ./src
 go build -o "../bin/Server" Server.go
 
-//volvemos a bin
+#volvemos a bin
 cd ..
 cd bin
 
