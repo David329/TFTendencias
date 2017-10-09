@@ -1,5 +1,56 @@
-// en construccion..., con extension Rest Client
-//para Flights
+#(?id)= ingresar id manual
+###Users
+#GET
+GET http://localhost:8000/users
+
+#POST
+POST http://localhost:8000/users
+content-type: application/json
+{
+    "firstname": "ffffcsdsd",
+    "lastname": "xtuki",
+    "passporttype": "DNI",
+    "passportnumber": "434",
+    "email": "david@gmail.com",
+    "password": "iksdi",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "2323",
+        "csc": "2232323",
+        "total": 2332,
+        "expirationdate": "23/21/1923"
+    }
+}
+
+#PUT
+PUT http://localhost:8000/users/(?id)
+content-type: application/json
+{
+    "firstname": "ffffcsdsd",
+    "lastname": "xtuki",
+    "passporttype": "DNI",
+    "passportnumber": "434",
+    "email": "david@gmail.com",
+    "password": "iksdi",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "2323",
+        "csc": "2232323",
+        "total": 2332,
+        "expirationdate": "23/21/1923"
+    }
+}
+
+#Delete
+DELETE http://localhost:8000/users/(?id)
+
+###Flights
+#GET
+GET http://localhost:8000/flights
+
+#POST
+POST http://localhost:8000/flights
+content-type: application/json
 {
 	"AirplaneModel": "sadasdusho",
 	"AirplaneNumber": "2213",
@@ -17,7 +68,10 @@
 		"TA": "21:20"
 	}
 }
-//Flights con 2 asientos
+
+#PUT
+PUT http://localhost:8000/flights/(?id)
+content-type: application/json
 {
 	"AirplaneModel": "sadasdusho",
 	"AirplaneNumber": "2213",
@@ -48,30 +102,32 @@
 	]
 }
 
-//Users
-{
-    "firstname": "ffffcsdsd",
-    "lastname": "xtuki",
-    "passporttype": "DNI",
-    "passportnumber": "434",
-    "email": "david@gmail.com",
-    "password": "iksdi",
-    "personalcard": {
-        "card": "Visa",
-        "cardnumber": "2323",
-        "csc": "2232323",
-        "total": 2332,
-        "expirationdate": "23/21/1923"
-    }
-}
+#Delete
+DELETE http://localhost:8000/flights/(?id)
 
-//Bookings
+###Bookings
+#GET
+GET http://localhost:8000/bookings
+
+#POST
+POST http://localhost:8000/bookings
+content-type: application/json
 {
-    "userid": "59cf2dc2f36d286c005cbf61",
-    "flightid": "59cc07ed6422e813bfcebb70",
+    "userid": "(?id)",
+    "flightid": "(?id)",
     "personalseat": {
-        "UserID": "59cf2dc2f36d286c005cbf61",
+        "UserID": "(?id)",
         "Number": "33A",
         "Type": "full"
     }
 }
+
+#PUT
+PUT http://localhost:8000/bookings/(?id)
+content-type: application/json
+{
+	TAMAL, PARLAR CON PRRULISES
+}
+
+#Delete
+DELETE http://localhost:8000/bookings/(?id)
