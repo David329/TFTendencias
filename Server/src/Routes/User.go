@@ -24,6 +24,7 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	//Pa' Obtener
 	var users []Entities.User
 	c := session.DB("lushflydb").C("Users")
+
 	err := c.Find(nil).Sort("-start").All(&users) //es opcional el sort
 	if err != nil {
 		panic(err)
@@ -32,14 +33,10 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	//cerrramos sesion
 	session.Close()
 
-	//parseamos a json
-	data, err := json.Marshal(users)
-	if err != nil {
-		log.Print(err)
-		return
-	}
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(users)
 
-	DB.SendResCloseSession(string(data), session, wr)
 }
 
 //PostUser Inserta un nuevo vuelo
@@ -59,12 +56,18 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	//inserto en la bd
 	c := session.DB("lushflydb").C("Users")
+
 	err = c.Insert(obj)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	DB.SendResCloseSession("Objeto Insertado", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Insertado")
 }
 
 //PutUserByID Actualiza un Documento User
@@ -87,12 +90,18 @@ func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Users")
+
 	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
 	if err != nil {
 		panic(err)
 	}
 
-	DB.SendResCloseSession("Actualizacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Actualizado")
 }
 
 //DeleteUserByID Elimina un usuario por ID, formato->JSON
@@ -105,11 +114,17 @@ func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Users")
+
 	err := c.RemoveId(bson.ObjectIdHex(reqID))
 
 	if err != nil {
 		panic(err)
 	}
 
-	DB.SendResCloseSession("Eliminacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Eliminado")
 }

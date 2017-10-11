@@ -2,9 +2,7 @@ package db
 
 //Access to DB
 import (
-	"encoding/json"
 	"log"
-	"net/http"
 
 	mgo "gopkg.in/mgo.v2"
 )
@@ -18,17 +16,4 @@ func GetDbSession() *mgo.Session {
 	}
 	session.SetMode(mgo.Monotonic, true)
 	return session
-}
-
-//SendResCloseSession Envia Respuesta y Cierra la conexion
-func SendResCloseSession(message string, session *mgo.Session, wr http.ResponseWriter) {
-	//formato de envio
-	wr.Header().Set("Content-Type", "application/json")
-
-	//estado web
-	wr.WriteHeader(http.StatusOK)
-
-	//envio del json a la ruta
-	json.NewEncoder(wr).Encode(message)
-	session.Close()
 }

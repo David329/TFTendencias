@@ -24,6 +24,7 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 	//Pa' Obtener
 	var bookings []Entities.Booking
 	c := session.DB("lushflydb").C("Bookings")
+
 	err := c.Find(nil).Sort("-start").All(&bookings) //es opcional el sort
 	if err != nil {
 		panic(err)
@@ -32,14 +33,9 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 	//cerrramos sesion
 	session.Close()
 
-	//parseamos a json
-	data, err := json.Marshal(bookings)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-
-	DB.SendResCloseSession(string(data), session, wr)
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(bookings)
 }
 
 //PostBooking Inserta un nuevo vuelo
@@ -63,6 +59,9 @@ func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params)
 	if err != nil {
 		panic(err)
 	}
+
+	wr.Header().Set("Content-Type", "application/json")
+
 	//chekar si esta en el limite de asientos
 	if len(flight.Seats) <= 30 {
 
@@ -94,14 +93,24 @@ func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params)
 
 		//inserto en la bd de Reservas
 		c := session.DB("lushflydb").C("Bookings")
+
 		err = c.Insert(booking)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		DB.SendResCloseSession("Reserva Completada", session, wr)
+		//cerrramos sesion
+		session.Close()
+
+		//Respuesta
+		json.NewEncoder(wr).Encode("Reserva Completada")
 	} else {
-		DB.SendResCloseSession("Este Vuelo esta lleno, Max 30 Asientos!!!", session, wr)
+
+		//cerrramos sesion
+		session.Close()
+
+		//Respuesta
+		json.NewEncoder(wr).Encode("Este Vuelo esta lleno, Max 30 Asientos!!!")
 	}
 }
 
@@ -125,12 +134,18 @@ func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Bookings")
+
 	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
 	if err != nil {
 		panic(err)
 	}
 
-	DB.SendResCloseSession("Actualizacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Actualizado")
 }
 
 //DeleteBookingByID Elimina un usuario por ID, formato->JSON
@@ -143,11 +158,17 @@ func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Bookings")
+
 	err := c.RemoveId(bson.ObjectIdHex(reqID))
 
 	if err != nil {
 		panic(err)
 	}
 
-	DB.SendResCloseSession("Eliminacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Eliminado")
 }

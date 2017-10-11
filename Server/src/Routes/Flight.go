@@ -24,6 +24,7 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 	//Pa' Obtener
 	var flights []Entities.Flight
 	c := session.DB("lushflydb").C("Flights")
+
 	err := c.Find(nil).Sort("-start").All(&flights) //es opcional el sort
 	if err != nil {
 		panic(err)
@@ -32,14 +33,9 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 	//cerrramos sesion
 	session.Close()
 
-	//parseamos a json
-	data, err := json.Marshal(flights)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-
-	DB.SendResCloseSession(string(data), session, wr)
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(flights)
 }
 
 //PostFlight Inserta un nuevo vuelo
@@ -59,12 +55,18 @@ func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 	//inserto en la bd
 	c := session.DB("lushflydb").C("Flights")
+
 	err = c.Insert(obj)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	DB.SendResCloseSession("Objeto Insertado", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Insertado")
 }
 
 //PutFlightByID Actualiza un Documento Flight
@@ -87,8 +89,11 @@ func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Para
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Flights")
-	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
 
+	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
+	if err != nil {
+		panic(err)
+	}
 	////tmb se puede modificar asi, solo atributos
 	// err = c.UpdateId(bson.ObjectIdHex(reqID), bson.M {
 	//         "$set": bson.M {
@@ -97,11 +102,13 @@ func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Para
 	// 	})
 
 	//err= c.FindId(bson.ObjectIdHex(reqID)).Sort("-start").One(&obj)//asi obtenemos un objeto
-	if err != nil {
-		panic(err)
-	}
 
-	DB.SendResCloseSession("Actualizacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Actualizado")
 }
 
 //DeleteFlightByID Elimina un usuario por ID, formato->JSON
@@ -114,11 +121,17 @@ func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.P
 
 	//obtener solo los q tienen ese id
 	c := session.DB("lushflydb").C("Flights")
+
 	err := c.RemoveId(bson.ObjectIdHex(reqID))
 
 	if err != nil {
 		panic(err)
 	}
 
-	DB.SendResCloseSession("Eliminacion Exitosa", session, wr)
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode("Objeto Eliminado")
 }

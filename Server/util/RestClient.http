@@ -50,20 +50,21 @@ GET http://localhost:8000/flights
 
 #POST
 POST http://localhost:8000/flights
+
 content-type: application/json
 {
-	"AirplaneModel": "sadasdusho",
-	"AirplaneNumber": "2213",
-	"Price": 32432,
+	"AirplaneModel": "Donsho",
+	"AirplaneNumber": "55213",
+	"Price": 1232,
 	"Depart": {
-		"Country": "peru",
-		"City": "Lima",
+		"Country": "Ecuadro",
+		"City": "NM",
 		"TD": "12:20",
 		"TA": "22:20"
 	},
 	"Destin": {
-		"Country": "Colombia",
-		"City": "Cali",
+		"Country": "USa",
+		"City": "NY",
 		"TD": "11:20",
 		"TA": "21:20"
 	}
