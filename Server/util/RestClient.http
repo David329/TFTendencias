@@ -5,26 +5,26 @@ GET http://localhost:8000/users
 
 #POST
 POST http://localhost:8000/users
-content-type: application/json
+
 {
-    "firstname": "ffffcsdsd",
-    "lastname": "xtuki",
+    "firstname": "luis",
+    "lastname": "veliz",
     "passporttype": "DNI",
-    "passportnumber": "434",
-    "email": "david@gmail.com",
-    "password": "iksdi",
+    "passportnumber": "43434",
+    "email": "lusho@gmail.com",
+    "password": "lss",
     "personalcard": {
         "card": "Visa",
-        "cardnumber": "2323",
-        "csc": "2232323",
-        "total": 2332,
-        "expirationdate": "23/21/1923"
+        "cardnumber": "4423",
+        "csc": "663",
+        "total": 433,
+        "expirationdate": "23/21/1623"
     }
 }
 
 #PUT
 PUT http://localhost:8000/users/(?id)
-content-type: application/json
+
 {
     "firstname": "ffffcsdsd",
     "lastname": "xtuki",
@@ -51,54 +51,54 @@ GET http://localhost:8000/flights
 #POST
 POST http://localhost:8000/flights
 
-content-type: application/json
 {
-	"AirplaneModel": "Donsho",
-	"AirplaneNumber": "55213",
-	"Price": 1232,
-	"Depart": {
-		"Country": "Ecuadro",
-		"City": "NM",
-		"TD": "12:20",
-		"TA": "22:20"
+	"airplanemodel": "Donsho",
+	"airplanenumber": "55213",
+	"price": 1232,
+	"depart": {
+		"country": "Ecuadro",
+		"city": "NM",
+		"td": "12:20",
+		"ta": "22:20"
 	},
-	"Destin": {
-		"Country": "USa",
-		"City": "NY",
-		"TD": "11:20",
-		"TA": "21:20"
-	}
+	"destin": {
+		"country": "USa",
+		"city": "NY",
+		"td": "11:20",
+		"ta": "21:20"
+	},
+	"seats": []
 }
 
 #PUT
 PUT http://localhost:8000/flights/(?id)
-content-type: application/json
+
 {
-	"AirplaneModel": "sadasdusho",
-	"AirplaneNumber": "2213",
-	"Price": 32432,
-	"Depart": {
-		"Country": "peru",
-		"City": "Lima",
-		"TD": "12:20",
-		"TA": "22:20"
+	"airplanemodel": "sadasdusho",
+	"airplanenumber": "2213",
+	"price": 32432,
+	"depart": {
+		"country": "peru",
+		"city": "Lima",
+		"td": "12:20",
+		"ta": "22:20"
 	},
-	"Destin": {
-		"Country": "Colombia",
-		"City": "Cali",
-		"TD": "11:20",
-		"TA": "21:20"
+	"destin": {
+		"country": "Colombia",
+		"city": "Cali",
+		"td": "11:20",
+		"ta": "21:20"
 	},
 	"seats": [
 		{
-			"UserID": "ABC",
-			"Number": "2A",
-			"Type": "Full"
+			"userid": "ABC",
+			"number": "2A",
+			"type": "Full"
 		},
 		{
-			"UserID": "BBB",
-			"Number": "32A",
-			"Type": "Full"
+			"userid": "BBB",
+			"number": "32A",
+			"type": "Full"
 		}
 	]
 }
@@ -112,20 +112,20 @@ GET http://localhost:8000/bookings
 
 #POST
 POST http://localhost:8000/bookings
-content-type: application/json
+
 {
     "userid": "(?id)",
     "flightid": "(?id)",
     "personalseat": {
-        "UserID": "(?id)",
-        "Number": "33A",
-        "Type": "full"
+        "userid": "(?id)",
+        "number": "33A",
+        "type": "full"
     }
 }
 
 #PUT
 PUT http://localhost:8000/bookings/(?id)
-content-type: application/json
+
 {
 	TAMAL, PARLAR CON PRRULISES
 }

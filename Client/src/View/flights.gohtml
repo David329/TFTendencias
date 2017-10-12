@@ -1,0 +1,16 @@
+{{range .}}
+  <h2>User</h2>
+    <p>FirstName: {{.FirstName}}</p>
+    <p>LastName {{.LastName}}</p>
+    <p>PassportType: {{.PassportType}}</p>
+    <p>PassportNumber {{.PassportNumber}}</p>
+    <p>Email {{.Email}}</p>
+    <p>Password {{.Password}}</p>
+    <h4>+++ PassportNumber</h4>
+    <p>+++ Card {{.PersonalCard.Card}}</p>
+    <p>+++ CardNumber {{.PersonalCard.CardNumber}}</p>
+    <p>+++ CSC {{.PersonalCard.CSC}}</p>
+    <p>+++ Total {{.PersonalCard.Total}}</p>
+    <p>+++ ExpirationDate {{.PersonalCard.ExpirationDate}}</p>
+  <br/>
+{{end}}

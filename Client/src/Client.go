@@ -106,6 +106,8 @@ func main() {
 		//creacion de enrutador pat
 		router := httprouter.New()
 
+		//INVESTIGAR COMO REDIRECCIONAR, x ejemplo de get: /users -> /users.html
+
 		//Enrutadores-User
 		router.GET("/users.html", Controller.GetAllUser)
 		// router.POST("/users", Controller.PostUser)
@@ -113,7 +115,7 @@ func main() {
 		// router.DELETE("/users/:id", Controller.DeleteUserByID)
 
 		// //Enrutadores-Flight
-		router.GET("/flights", Controller.GetAllFlight)
+		router.GET("/flights.html", Controller.GetAllFlight)
 		// router.POST("/flights", Controller.PostFlight)
 		// router.PUT("/flights/:id", Controller.PutFlightByID)
 		// router.DELETE("/flights/:id", Controller.DeleteFlightByID)

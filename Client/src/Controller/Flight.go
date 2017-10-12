@@ -3,6 +3,8 @@ package controller
 //Restful - Flight
 import (
 	"encoding/json"
+	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -13,43 +15,45 @@ import (
 
 //Get-Post-Put-Delete
 
+const (
+	//BackendURL URL from RestAPI
+	BackendURL = "http://localhost:8000/"
+)
+
 //GetAllFlight Envia todos los vuelos, formato->JSON
 func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	req, err := http.NewRequest("GET", "http://localhost:8000/flights", nil)
-	if err != nil {
-		log.Fatal("NewRequest: ", err)
-		return
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal("Do: ", err)
-		return
-	}
-
-	defer resp.Body.Close()
-
 	var obj []Models.Flight
+	response, err := http.Get(BackendURL + "/flights")
 
-	if err := json.NewDecoder(resp.Body).Decode(&obj); err != nil {
-		log.Println(err)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	//	wr.Header().Set("Content-Type", "text/html")
+	responseData, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	//	fmt.Print(wr, string(responseData))
+	json.Unmarshal(responseData, &obj)
+
+	testTemplate, _ := template.ParseFiles("./View/flights.gohtml")
+
+	wr.Header().Set("Content-Type", "text/html")
+
+	err = testTemplate.Execute(wr, obj)
+	if err != nil {
+		http.Error(wr, err.Error(), http.StatusInternalServerError)
+	}
 }
 
-//PostFlight Inserta un nuevo vuelo
-func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-}
+// //PostFlight Inserta un nuevo vuelo
+// func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+// }
 
-//PutFlightByID Actualiza un Documento Flight
-func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-}
+// //PutFlightByID Actualiza un Documento Flight
+// func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+// }
 
-//DeleteFlightByID Elimina un usuario por ID, formato->JSON
-func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-}
+// //DeleteFlightByID Elimina un usuario por ID, formato->JSON
+// func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+// }

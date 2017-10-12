@@ -16,7 +16,7 @@ import (
 //Get-Post-Put-Delete
 
 const (
-	//BackendURL asd
+	//BackendURL URL from RestAPI
 	BackendURL = "http://localhost:8000/"
 )
 
