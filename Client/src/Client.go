@@ -107,7 +107,7 @@ func main() {
 		router := httprouter.New()
 
 		//Enrutadores-User
-		router.GET("/users", Controller.GetAllUser)
+		router.GET("/users.html", Controller.GetAllUser)
 		// router.POST("/users", Controller.PostUser)
 		// router.PUT("/users/:id", Controller.PutUserByID)
 		// router.DELETE("/users/:id", Controller.DeleteUserByID)

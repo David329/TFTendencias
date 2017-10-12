@@ -23,7 +23,7 @@ const (
 //GetAllUser Envia todos los usuarios, formato->JSON
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var obj []Models.User
-	response, err := http.Get("http://localhost:8000/users")
+	response, err := http.Get(BackendURL + "/users")
 
 	if err != nil {
 		log.Fatal(err)
@@ -36,16 +36,14 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 	json.Unmarshal(responseData, &obj)
 
-	view := "users.html"
+	testTemplate, _ := template.ParseFiles("./View/users.gohtml")
 
-	log.Print(obj)
+	wr.Header().Set("Content-Type", "text/html")
 
-	t, _ := template.ParseFiles(view /* + ".html"*/)
-
-	log.Print(t)
-
-	t.Execute(wr, obj[0])
-
+	err = testTemplate.Execute(wr, obj)
+	if err != nil {
+		http.Error(wr, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 // //PostUser Inserta un nuevo vuelo
