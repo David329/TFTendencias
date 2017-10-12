@@ -31,11 +31,15 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 	json.Unmarshal(responseData, &obj)
 
-	testTemplate, _ := template.ParseFiles("./View/users.gohtml")
+	testTemplate, _ := template.ParseFiles(
+		"./View/templates/header.gohtml",
+		"./View/lstusers.gohtml",
+		"./View/templates/footer.gohtml",
+	)
 
 	wr.Header().Set("Content-Type", "text/html")
 
-	err = testTemplate.Execute(wr, obj)
+	err = testTemplate.ExecuteTemplate(wr, "lstusers", obj)
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 	}
@@ -55,3 +59,20 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 // func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 // }
+
+//RenderIndex No es de User, solo se utiliza para mostrar el menu
+func RenderIndex(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+
+	wr.Header().Set("Content-Type", "text/html")
+
+	wr.Write([]byte(
+		`
+		<h3>Menu</h3>
+		<ul>
+			<li><a href="http://localhost:8001/lstusers.html">Users</a></li>
+			<li><a href="http://localhost:8001/lstflights.html">Flights</a></li>
+			<li><a href="http://localhost:8001/lstbookings.html">Bookings</a></li>
+	  	</ul> 
+		`),
+	)
+}
