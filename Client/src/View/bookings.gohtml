@@ -1,0 +1,13 @@
+{{range .}}
+
+  <h2>Booking</h2>
+    <p>UserID: {{.UserID}}</p>
+    <p>FlightID: {{.FlightID}}</p>
+
+    <h4>+++ PersonalSeat</h4>
+    <p>+++ UserID: {{.PersonalSeat.UserID}}</p>
+    <p>+++ Number: {{.PersonalSeat.Number}}</p>
+    <p>+++ Type: {{.PersonalSeat.Type}}</p>
+
+  <br/>
+{{end}}

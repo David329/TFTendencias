@@ -15,15 +15,10 @@ import (
 
 //Get-Post-Put-Delete
 
-const (
-	//BackendURL URL from RestAPI
-	BackendURL = "http://localhost:8000/"
-)
-
-//GetAllUser Envia todos los usuarios, formato->JSON
+//GetAllUser Envia todos los usuarios, formato->HTML
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var obj []Models.User
-	response, err := http.Get(BackendURL + "/users")
+	response, err := http.Get("http://localhost:8000/users")
 
 	if err != nil {
 		log.Fatal(err)

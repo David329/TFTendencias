@@ -121,7 +121,7 @@ func main() {
 		// router.DELETE("/flights/:id", Controller.DeleteFlightByID)
 
 		// //Enrutadores-Booking
-		// router.GET("/bookings", Controller.GetAllBooking)
+		router.GET("/bookings.html", Controller.GetAllBooking)
 		// router.POST("/bookings", Controller.PostBooking)
 		// router.PUT("/bookings/:id", Controller.PutBookingByID)
 		// router.DELETE("/bookings/:id", Controller.DeleteBookingByID)

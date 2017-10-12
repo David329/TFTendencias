@@ -15,15 +15,10 @@ import (
 
 //Get-Post-Put-Delete
 
-const (
-	//BackendURL URL from RestAPI
-	BackendURL = "http://localhost:8000/"
-)
-
-//GetAllFlight Envia todos los vuelos, formato->JSON
+//GetAllFlight Envia todos los vuelos, formato->HTML
 func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var obj []Models.Flight
-	response, err := http.Get(BackendURL + "/flights")
+	response, err := http.Get("http://localhost:8000/flights")
 
 	if err != nil {
 		log.Fatal(err)
