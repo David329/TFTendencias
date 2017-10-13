@@ -6,7 +6,7 @@ import (
 
 // Booking Entitie.
 type Booking struct {
-	ID           bson.ObjectId `bson:"_id"`
+	ID           bson.ObjectId `bson:"_id,omitempty"`
 	UserID       string
 	FlightID     string
 	PersonalSeat Seat

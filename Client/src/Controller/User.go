@@ -57,15 +57,11 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 //DeleteUserByID Elimina un usuario por ID, formato->JSON
 func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	reqID := ps.ByName("id")
-	log.Println(reqID)
-	// httprouter.New().DELETE()
+	response, _ := http.NewRequest("DELETE", "http://localhost:8000/users/"+ps.ByName("id"), nil)
 
-	// _, err := http.("http://localhost:8000/users/" + reqID)
+	new(http.Client).Do(response)
 
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	GetAllUser(wr, req, ps)
 }
 
 //RenderIndex No es de User, solo se utiliza para mostrar el menu
