@@ -1,0 +1,135 @@
+###RestClient para servicio Cliente: http://localhost:8001/
+#(?id)= ingresar id manual
+###Users
+#GET
+GET http://localhost:8001/users
+
+#POST
+POST http://localhost:8001/users
+
+{
+    "firstname": "luis",
+    "lastname": "veliz",
+    "passporttype": "DNI",
+    "passportnumber": "43434",
+    "email": "lusho@gmail.com",
+    "password": "lss",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "4423",
+        "csc": "663",
+        "total": 433,
+        "expirationdate": "23/21/1623"
+    }
+}
+
+#PUT
+PUT http://localhost:8001/users/(?id)
+
+{
+    "firstname": "ffffcsdsd",
+    "lastname": "xtuki",
+    "passporttype": "DNI",
+    "passportnumber": "434",
+    "email": "david@gmail.com",
+    "password": "iksdi",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "2323",
+        "csc": "2232323",
+        "total": 2332,
+        "expirationdate": "23/21/1923"
+    }
+}
+
+#Delete
+DELETE http://localhost:8001/users/(?id)
+
+###Flights
+#GET
+GET http://localhost:8001/flights
+
+#POST
+POST http://localhost:8001/flights
+
+{
+	"airplanemodel": "Donsho",
+	"airplanenumber": "55213",
+	"price": 1232,
+	"depart": {
+		"country": "Ecuadro",
+		"city": "NM",
+		"td": "12:20",
+		"ta": "22:20"
+	},
+	"destin": {
+		"country": "USa",
+		"city": "NY",
+		"td": "11:20",
+		"ta": "21:20"
+	},
+	"seats": []
+}
+
+#PUT
+PUT http://localhost:8001/flights/(?id)
+
+{
+	"airplanemodel": "sadasdusho",
+	"airplanenumber": "2213",
+	"price": 32432,
+	"depart": {
+		"country": "peru",
+		"city": "Lima",
+		"td": "12:20",
+		"ta": "22:20"
+	},
+	"destin": {
+		"country": "Colombia",
+		"city": "Cali",
+		"td": "11:20",
+		"ta": "21:20"
+	},
+	"seats": [
+		{
+			"userid": "ABC",
+			"number": "2A",
+			"type": "Full"
+		},
+		{
+			"userid": "BBB",
+			"number": "32A",
+			"type": "Full"
+		}
+	]
+}
+
+#Delete
+DELETE http://localhost:8001/flights/(?id)
+
+###Bookings
+#GET
+GET http://localhost:8001/bookings
+
+#POST
+POST http://localhost:8001/bookings
+
+{
+    "userid": "(?id)",
+    "flightid": "(?id)",
+    "personalseat": {
+        "userid": "(?id)",
+        "number": "33A",
+        "type": "full"
+    }
+}
+
+#PUT
+PUT http://localhost:8001/bookings/(?id)
+
+{
+	TAMAL, PARLAR CON PRRULISES
+}
+
+#Delete
+DELETE http://localhost:8001/bookings/(?id)

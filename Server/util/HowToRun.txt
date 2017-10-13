@@ -1,0 +1,5 @@
+//Pa correrlo Server
+ejecutar el archivo RunServer.sh(linux, en windows con gitbash): ./RunServer.sh
+	si no funciona por permisos, otorgarle de la siguiente manera:chmod +x ./RunServer.sh
+	si no funciona por paquetes, instalarlos como se menciona en archivo InstallPackages.txt
+	si no funciona por credenciales de BD, preguntar e incorporarlas en /Server/src/DB/Access.go
