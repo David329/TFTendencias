@@ -33,7 +33,7 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 	testTemplate, _ := template.ParseFiles(
 		"./View/templates/header.gohtml",
-		"./View/lstusers.gohtml",
+		"./View/Users/lstusers.gohtml",
 		"./View/templates/footer.gohtml",
 	)
 
@@ -55,10 +55,18 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 // }
 
-// //DeleteUserByID Elimina un usuario por ID, formato->JSON
-// func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteUserByID Elimina un usuario por ID, formato->JSON
+func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	reqID := ps.ByName("id")
+	log.Println(reqID)
+	// httprouter.New().DELETE()
 
-// }
+	// _, err := http.("http://localhost:8000/users/" + reqID)
+
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+}
 
 //RenderIndex No es de User, solo se utiliza para mostrar el menu
 func RenderIndex(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
