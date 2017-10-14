@@ -10,7 +10,7 @@ import (
 //GetDbSession retorna la session de la BD
 func GetDbSession() *mgo.Session {
 	//creacion conexion con mlab, con driver mgo
-	session, err := mgo.Dial("mongodb://userdb:passworddb@ds149324.mlab.com:49324/lushflydb")
+	session, err := mgo.Dial("mongodb://lusho:lushoonrails@ds149324.mlab.com:49324/lushflydb")
 	if err != nil {
 		log.Print(err)
 	}

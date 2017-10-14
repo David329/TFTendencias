@@ -104,12 +104,9 @@ func PostPutUser(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 		fmt.Println(err)
 		return
 	}
-	// var user Models.User
-
-	// user.FirstName=
 
 	if req.Form["ID"][0] != "0" {
-		log.Println("Editar")
+		response, _ = http.NewRequest("PUT", "http://localhost:8000/users/"+req.Form["ID"][0], bytes.NewReader(userBytes))
 	} else {
 		response, _ = http.NewRequest("POST", "http://localhost:8000/users", bytes.NewReader(userBytes))
 	}
