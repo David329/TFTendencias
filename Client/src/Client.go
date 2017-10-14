@@ -112,7 +112,6 @@ func main() {
 		router.GET("/lstusers.html", Controller.GetAllUser)
 		router.GET("/users/addedit/:id", Controller.GetAddEditUser)
 		router.POST("/users", Controller.PostPutUser)
-		// router.POST("/users/edit/:id", Controller.PutUserByID)
 		router.GET("/users/delete/:id", Controller.DeleteUserByID)
 
 		// //Enrutadores-Flight
