@@ -1,6 +1,5 @@
 package controller
 
-//Restful - Booking
 import (
 	"encoding/json"
 	"html/template"
@@ -9,6 +8,7 @@ import (
 	"net/http"
 
 	Models "../Model"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -31,11 +31,15 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 
 	json.Unmarshal(responseData, &obj)
 
-	testTemplate, _ := template.ParseFiles("./View/bookings.gohtml")
+	tmpl, _ := template.ParseFiles(
+		"./View/templates/header.gohtml",
+		"./View/Bookings/lstbookings.gohtml",
+		"./View/templates/footer.gohtml",
+	)
 
 	wr.Header().Set("Content-Type", "text/html")
 
-	err = testTemplate.Execute(wr, obj)
+	err = tmpl.ExecuteTemplate(wr, "lstbookings", obj)
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 	}
@@ -51,7 +55,11 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 
 // }
 
-// //DeleteBookingByID Elimina un usuario por ID, formato->JSON
-// func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteBookingByID Elimina un usuario por ID, formato->JSON
+func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	response, _ := http.NewRequest("DELETE", "http://localhost:8000/bookings/"+ps.ByName("id"), nil)
 
-// }
+	new(http.Client).Do(response)
+
+	GetAllBooking(wr, req, ps)
+}

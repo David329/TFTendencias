@@ -1,0 +1,48 @@
+{{ define "addedituser" }}
+  {{ template "header" }}
+    <h2>{{if .ID}} Editar {{else}} Agregar {{end}}</h2>
+      <form method="POST" action="/users">
+      <h3>Personal Information</h3>
+      <p>
+          <input type="hidden" name="ID" value="{{if .ID}}{{.ID}}{{else}}0{{end}}">
+          First Name:
+          <input type="text" name="FirstName" placeholder="FirstName" required value="{{.FirstName}}">
+          <br>
+          Last Name:
+          <input type="text" name="LastName" placeholder="LastName" required value="{{.LastName}}">
+          <br>
+          Passport Type:
+          <input type="text" name="PassportType" placeholder="PassportType" required value="{{.PassportType}}">
+          <br>
+          Passport Number:
+          <input type="text" name="PassportNumber" placeholder="PassportNumber" required value="{{.PassportNumber}}">
+          <br>
+          Email:
+          <input type="text" name="Email" placeholder="Email" required value="{{.Email}}">
+          <br>
+          Password:
+          <input type="text" name="Password" placeholder="Password" required value="{{.Password}}">
+          <br>
+          <br>
+          <h3>Personal Card</h3>
+          Card
+          <input type="text" name="Card" placeholder="Card" required value="{{.PersonalCard.Card}}">
+          <br>
+          CardNumber
+          <input type="text" name="CardNumber" placeholder="CardNumber" required value="{{.PersonalCard.CardNumber}}">
+          <br>
+          CSC
+          <input type="text" name="CSC" placeholder="CSC" required value="{{.PersonalCard.CSC}}">
+          <br>
+          Total
+          <input type="text" name="Total" placeholder="Total" required value="{{.PersonalCard.Total}}">
+          <br>
+          Expiration Date
+          <input type="text" name="ExpirationDate" placeholder="ExpirationDate" required value="{{.PersonalCard.ExpirationDate}}">
+
+          <input style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+          type="submit" value="{{if .ID}}Editar{{else}}Agregar{{end}}">
+      </p>
+      </form>
+  {{ template "footer" }}
+{{ end }}

@@ -105,7 +105,7 @@ PUT http://localhost:8001/flights/(?id)
 }
 
 #Delete
-DELETE http://localhost:8001/flights/(?id)
+DELETE http://localhost:8001/flights/delete/59e12931a5b2e1a8afd528c6
 
 ###Bookings
 #GET

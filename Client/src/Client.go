@@ -110,21 +110,22 @@ func main() {
 		router.GET("/", Controller.RenderIndex)
 
 		router.GET("/lstusers.html", Controller.GetAllUser)
-		// router.POST("/users", Controller.PostUser)
-		// router.PUT("/users/:id", Controller.PutUserByID)
+		router.GET("/users/addedit/:id", Controller.GetAddEditUser)
+		router.POST("/users", Controller.PostPutUser)
+		// router.POST("/users/edit/:id", Controller.PutUserByID)
 		router.GET("/users/delete/:id", Controller.DeleteUserByID)
 
 		// //Enrutadores-Flight
 		router.GET("/lstflights.html", Controller.GetAllFlight)
 		// router.POST("/flights", Controller.PostFlight)
 		// router.PUT("/flights/:id", Controller.PutFlightByID)
-		// router.DELETE("/flights/:id", Controller.DeleteFlightByID)
+		router.GET("/flights/delete/:id", Controller.DeleteFlightByID)
 
 		// //Enrutadores-Booking
 		router.GET("/lstbookings.html", Controller.GetAllBooking)
 		// router.POST("/bookings", Controller.PostBooking)
 		// router.PUT("/bookings/:id", Controller.PutBookingByID)
-		// router.DELETE("/bookings/:id", Controller.DeleteBookingByID)
+		router.GET("/bookings/delete/:id", Controller.DeleteBookingByID)
 
 		//Escuchando el servidor
 		log.Print("Escuchando en 127.0.0.1:8001...")

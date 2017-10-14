@@ -1,6 +1,5 @@
 package controller
 
-//Restful - Flight
 import (
 	"encoding/json"
 	"html/template"
@@ -31,11 +30,14 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 
 	json.Unmarshal(responseData, &obj)
 
-	testTemplate, _ := template.ParseFiles("./View/flights.gohtml")
-
+	tmpl, _ := template.ParseFiles(
+		"./View/templates/header.gohtml",
+		"./View/Flights/lstflights.gohtml",
+		"./View/templates/footer.gohtml",
+	)
 	wr.Header().Set("Content-Type", "text/html")
 
-	err = testTemplate.Execute(wr, obj)
+	err = tmpl.ExecuteTemplate(wr, "lstflights", obj)
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 	}
@@ -49,6 +51,11 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 // func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 // }
 
-// //DeleteFlightByID Elimina un usuario por ID, formato->JSON
-// func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-// }
+//DeleteFlightByID Elimina un usuario por ID, formato->JSON
+func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	response, _ := http.NewRequest("DELETE", "http://localhost:8000/flights/"+ps.ByName("id"), nil)
+
+	new(http.Client).Do(response)
+
+	GetAllFlight(wr, req, ps)
+}

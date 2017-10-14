@@ -38,6 +38,23 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 	json.NewEncoder(wr).Encode(flights)
 }
 
+//GetFlightByID Envia El vuelo por ID, formato->JSON
+func GetFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	session := DB.GetDbSession()
+	var flight Entities.Flight
+
+	c := session.DB("lushflydb").C("Flights")
+
+	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&flight)
+
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(flight)
+}
+
 //PostFlight Inserta un nuevo vuelo
 func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 

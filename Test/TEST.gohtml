@@ -24,3 +24,50 @@
 
 
         <!--<td><a href="/users/{{ .Id }}">Edit</a> | <a href="/users/{{ .Id }}">Edit</a><td>-->
+
+
+{{ define "flights" }}
+{{range .}}
+
+  <h2>Flight</h2>
+    <p>AirplaneModel: {{.AirplaneModel}}</p>
+    <p>AirplaneNumber: {{.AirplaneNumber}}</p>
+    <p>Price: {{.Price}}</p>
+
+    <h4>+++ Departure</h4>
+    <p>+++ Country: {{.Depart.Country}}</p>
+    <p>+++ City: {{.Depart.City}}</p>
+    <p>+++ TD: {{.Depart.TD}}</p>
+    <p>+++ TA: {{.Depart.TA}}</p>
+
+    <h4>+++ Destination</h4>
+    <p>+++ Country: {{.Destin.Country}}</p>
+    <p>+++ City: {{.Destin.City}}</p>
+    <p>+++ TD: {{.Destin.TD}}</p>
+    <p>+++ TA: {{.Destin.TA}}</p>
+
+    <h4>+++ Seats</h4>
+    {{range .Seats}}
+    <h5>+++ Seat</h5>
+    <p>+++ UserID: {{.UserID}}</p>
+    <p>+++ Number: {{.Number}}</p>
+    <p>+++ Type: {{.Type}}</p>
+    {{end}}
+
+  <br/>
+{{end}}
+
+{{ define "bookings" }}
+{{range .}}
+
+  <h2>Booking</h2>
+    <p>UserID: {{.UserID}}</p>
+    <p>FlightID: {{.FlightID}}</p>
+
+    <h4>+++ PersonalSeat</h4>
+    <p>+++ UserID: {{.PersonalSeat.UserID}}</p>
+    <p>+++ Number: {{.PersonalSeat.Number}}</p>
+    <p>+++ Type: {{.PersonalSeat.Type}}</p>
+
+  <br/>
+{{end}}

@@ -38,6 +38,23 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 	json.NewEncoder(wr).Encode(bookings)
 }
 
+//GetBookingByID Envia la reserva por ID, formato->JSON
+func GetBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	session := DB.GetDbSession()
+	var booking Entities.Booking
+
+	c := session.DB("lushflydb").C("Bookings")
+
+	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&booking)
+
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(booking)
+}
+
 //PostBooking Inserta un nuevo vuelo
 func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	session := DB.GetDbSession()

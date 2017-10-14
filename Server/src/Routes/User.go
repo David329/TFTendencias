@@ -39,6 +39,23 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 }
 
+//GetUserByID Envia El usuario por ID, formato->JSON
+func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	session := DB.GetDbSession()
+	var user Entities.User
+
+	c := session.DB("lushflydb").C("Users")
+
+	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&user)
+
+	//cerrramos sesion
+	session.Close()
+
+	//Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(user)
+}
+
 //PostUser Inserta un nuevo vuelo
 func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 

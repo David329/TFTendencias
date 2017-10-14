@@ -1,5 +1,7 @@
 {{ define "lstusers" }}
   {{ template "header" }}
+    <a style="background-color: #FF0000;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/">Atras</a>
     <table border="1">
       <thead>
         <tr>
@@ -15,10 +17,12 @@
         <td>{{ .FirstName }}</td>
         <td> {{ .LastName }} </td>
         <td>{{ .Email }} </td>
-        <td><a href="/users/{{ .ID }}">Edit</a> | <a onclick="return confirm('Deseas Eliminar este Usuario?')" href="/users/delete/{{ .ID }}">Delete</a><td>
+        <td><a href="/users/addedit/{{ .ID }}">Edit</a> | <a onclick="return confirm('Deseas Eliminar este Usuario?')" href="/users/delete/{{ .ID }}">Delete</a><td>
         </tr>
         {{ end }}
       </tbody>
     </table>
+    <a style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/users/addedit/0">Agregar</a>
   {{ template "footer" }}
 {{ end }}
