@@ -122,8 +122,8 @@ func main() {
 
 		// //Enrutadores-Booking
 		router.GET("/lstbookings.html", Controller.GetAllBooking)
-		// router.POST("/bookings", Controller.PostBooking)
-		// router.PUT("/bookings/:id", Controller.PutBookingByID)
+		router.GET("/bookings/addedit/:id", Controller.GetAddEditBooking)
+		router.POST("/bookings", Controller.PostPutBooking)
 		router.GET("/bookings/delete/:id", Controller.DeleteBookingByID)
 
 		//Escuchando el servidor

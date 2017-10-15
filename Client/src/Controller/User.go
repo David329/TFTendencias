@@ -115,11 +115,6 @@ func PostPutUser(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 	GetAllUser(wr, req, ps)
 }
 
-// //PutUserByID Actualiza un Documento User
-// func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-
-// }
-
 //DeleteUserByID Elimina un usuario por ID, formato->JSON
 func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	response, _ := http.NewRequest("DELETE", "http://localhost:8000/users/"+ps.ByName("id"), nil)
