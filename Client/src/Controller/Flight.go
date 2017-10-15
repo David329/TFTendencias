@@ -43,6 +43,35 @@ func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params
 	}
 }
 
+//GetAddEditFlight Envia un formulario con el objeto obtenido x el url, sino vacio
+func GetAddEditFlight(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	var flight Models.Flight
+	//Si id tiene valor diferente a 0 entonces -> Edit, de lo contrario enviar 0;ver addeditflight.gohtml href de Agregar
+	if ps.ByName("id") != "0" {
+
+		response, err := http.Get("http://localhost:8000/flights/" + ps.ByName("id"))
+		if err != nil {
+			log.Fatal(err)
+		}
+		responseData, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		json.Unmarshal(responseData, &flight)
+	}
+	tmpl, _ := template.ParseFiles(
+		"./View/templates/header.gohtml",
+		"./View/Flights/addeditflight.gohtml",
+		"./View/templates/footer.gohtml",
+	)
+	wr.Header().Set("Content-Type", "text/html")
+
+	err := tmpl.ExecuteTemplate(wr, "addeditflight", flight)
+	if err != nil {
+		http.Error(wr, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 // //PostFlight Inserta un nuevo vuelo
 // func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 // }

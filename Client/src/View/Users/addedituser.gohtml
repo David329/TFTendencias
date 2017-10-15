@@ -1,6 +1,9 @@
 {{ define "addedituser" }}
   {{ template "header" }}
     <h2>{{if .ID}} Editar {{else}} Agregar {{end}}</h2>
+    <a style="background-color: #FF0000;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/lstusers.html">Atras</a>
+
       <form method="POST" action="/users">
       <h3>Personal Information</h3>
       <p>

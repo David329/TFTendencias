@@ -47,7 +47,7 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	}
 }
 
-//GetAddEditUser Envia un formulario conel objeto obtenido x el url, sino vacio
+//GetAddEditUser Envia un formulario con el objeto obtenido x el url, sino vacio
 func GetAddEditUser(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	var user Models.User
 	//Si id tiene valor diferente a 0 entonces -> Edit, de lo contrario enviar 0;ver addedituser.gohtml href de Agregar
