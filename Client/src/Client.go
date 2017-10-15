@@ -117,8 +117,7 @@ func main() {
 		// //Enrutadores-Flight
 		router.GET("/lstflights.html", Controller.GetAllFlight)
 		router.GET("/flights/addedit/:id", Controller.GetAddEditFlight)
-		// router.POST("/flights", Controller.PostFlight)
-		// router.PUT("/flights/:id", Controller.PutFlightByID)
+		router.POST("/flights", Controller.PostPutFlight)
 		router.GET("/flights/delete/:id", Controller.DeleteFlightByID)
 
 		// //Enrutadores-Booking
