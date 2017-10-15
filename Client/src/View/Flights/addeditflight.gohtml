@@ -6,31 +6,32 @@
             function addSeat($i) {
                 var divAsientos = document.getElementById("asientos");
                 var cantAsientos = divAsientos.childElementCount;
-    
                 var cantAsientosFaltantes = $i - cantAsientos;
     
                 if (cantAsientosFaltantes > 0) {
                     for (var i = 0; i < cantAsientosFaltantes; i++) {
                         var element = document.createElement("h3");
                         element.setAttribute("class", "seatClass");
-                        element.innerText = "Seat";
+                        element.textContent = "Seat";
                         divAsientos.appendChild(element);
                     }
                     var seatArrayElements = document.getElementsByClassName("seatClass");
-                    for (var i = 0; i < seatArrayElements.length; i++) {
+                	var camposPorLlenar=seatArrayElements.length-cantAsientos;
+                    if(camposPorLlenar>0){
+                    for (var i = cantAsientos; i < seatArrayElements.length; i++) {
                         seatArrayElements[i].appendChild(document.createElement("br"));
     
                         var seatElement = document.createElement("div");
-                        seatElement.innerText = "UserID:";
+                        seatElement.textContent = "UserID:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
                         seatElement.setAttribute("type", "text");
                         seatElement.setAttribute("name", "UserID");
-                        seatElement.setAttribute("placeholder", "UserID - Optional");
+                        seatElement.setAttribute("placeholder", "UserID");
                         seatArrayElements[i].appendChild(seatElement);
                         
                         seatElement = document.createElement("div");
-                        seatElement.innerText = "Number:";
+                        seatElement.textContent = "Number:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
                         seatElement.setAttribute("type", "text");
@@ -39,7 +40,7 @@
                         seatArrayElements[i].appendChild(seatElement);
                         
                         seatElement = document.createElement("div");
-                        seatElement.innerText = "Type:";
+                        seatElement.textContent = "Type:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
                         seatElement.setAttribute("type", "text");
@@ -47,6 +48,7 @@
                         seatElement.setAttribute("placeholder", "Type");
                         seatArrayElements[i].appendChild(seatElement);
     
+                    }
                     }
                 } else {
                     while (cantAsientosFaltantes != 0) {
@@ -108,27 +110,27 @@
           <h3>Seats: Enter the Seats for the lusho: </h3>
           <select onchange="addSeat(value);">
             <option selected disabled>Count of Seats</option>
+            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-
+<!-- TENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER CUIDADO CON LOS WHITESPACES DE TEMPLATES EN GOOOOOOOOOOOO PTMMMMMMM ME HIZO PERDER EL TIEMPO TMRRRRR -->
         <div id="asientos">
-            {{ range .Seats }}
-                <h3 class="seatClass">Seat</h3>
-                <br>
-                <div>UserID:</div>
-                <input type="text" name="UserID" value="{{.UserID}}">
+            {{ range .Seats -}}
+                <h3 class="seatClass">Seat
+                    <br>
+                    <div>UserID:</div>
+                    <input type="text" name="UserID" value="{{.UserID}}">
 
-                <div>Number:</div>
-                <input type="text" name="Number" value="{{.Number}}">
+                    <div>Number:</div>
+                    <input type="text" name="Number" value="{{.Number}}">
 
-                <div>Type:</div>
-                <input type="text" name="Type" value="{{.Type}}">
-            {{end}}
-        </div>
+                    <div>Type:</div>
+                    <input type="text" name="Type" value="{{.Type}}">
+                </h3>{{- end}}</div>
         <br>
           <input style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
           type="submit" value="{{if .ID}}Editar{{else}}Agregar{{end}}">

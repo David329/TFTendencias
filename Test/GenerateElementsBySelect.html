@@ -6,47 +6,49 @@
             function addSeat($i) {
                 var divAsientos = document.getElementById("asientos");
                 var cantAsientos = divAsientos.childElementCount;
-    
                 var cantAsientosFaltantes = $i - cantAsientos;
     
                 if (cantAsientosFaltantes > 0) {
                     for (var i = 0; i < cantAsientosFaltantes; i++) {
                         var element = document.createElement("h3");
                         element.setAttribute("class", "seatClass");
-                        element.innerText = "Seat";
+                        element.textContent = "Seat";
                         divAsientos.appendChild(element);
                     }
                     var seatArrayElements = document.getElementsByClassName("seatClass");
-                    for (var i = 0; i < seatArrayElements.length; i++) {
+                	var camposPorLlenar=seatArrayElements.length-cantAsientos;
+                    if(camposPorLlenar>0){
+                    for (var i = cantAsientos; i < seatArrayElements.length; i++) {
                         seatArrayElements[i].appendChild(document.createElement("br"));
     
                         var seatElement = document.createElement("div");
-                        seatElement.innerText = "UserID:";
+                        seatElement.textContent = "UserID:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
-                        element.setAttribute("type", "text");
-                        element.setAttribute("name", "Seat");
-                        element.setAttribute("placeholder", "Seat");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "UserID");
+                        seatElement.setAttribute("placeholder", "UserID");
                         seatArrayElements[i].appendChild(seatElement);
                         
                         seatElement = document.createElement("div");
-                        seatElement.innerText = "Number:";
+                        seatElement.textContent = "Number:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
-                        element.setAttribute("type", "text");
-                        element.setAttribute("name", "Number");
-                        element.setAttribute("placeholder", "Number");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "Number");
+                        seatElement.setAttribute("placeholder", "Number");
                         seatArrayElements[i].appendChild(seatElement);
                         
                         seatElement = document.createElement("div");
-                        seatElement.innerText = "Type:";
+                        seatElement.textContent = "Type:";
                         seatArrayElements[i].appendChild(seatElement);
                         seatElement = document.createElement("input");
-                        element.setAttribute("type", "text");
-                        element.setAttribute("name", "Type");
-                        element.setAttribute("placeholder", "Type");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "Type");
+                        seatElement.setAttribute("placeholder", "Type");
                         seatArrayElements[i].appendChild(seatElement);
     
+                    }
                     }
                 } else {
                     while (cantAsientosFaltantes != 0) {
@@ -65,6 +67,7 @@
         <select onchange="addSeat(value);">
     
             <option selected disabled>Cantidad de Asientos</option>
+            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

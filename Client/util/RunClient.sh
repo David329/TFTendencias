@@ -28,3 +28,5 @@ then
 else
      echo "Compilado en Bin Client, pero no ejecutado"	
 fi
+
+############################## VEERIFICAR EL ERROR DE EJECUCION INFOLDER AL CORRER LOS .SH
