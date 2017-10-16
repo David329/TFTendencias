@@ -1,0 +1,22 @@
+1. Limpar las bases de datos que se encuentren en el servidor por defecto en el servidor de mongo en los puertos 27017, 27018 y 27019:
+Ver Script: ./Mongo/cleanAllDBs.mongo
+
+2. Crear las bases de datos en Replicas:
+Ver Script: ./Mongo/createReplicaSetMongo.sh
+
+3. Luego de que las 3 Bases de datos esten en ejecucion, Necesitaremos confiurarlos como Replica Set Abrir otra terminal:
+Ver Script: ./Mongo/confReplicaSetMongo.mongo
+
+4. Luego de que las 3 Bases de Datos estan conectadas en Modo Replica, Insertamos datos de prueba:
+Ver Script: ./Mongo/lushflydbQueries.mongo
+
+5. Corremos el Servidor:
+Ver Script:  ./RunServer.sh
+
+6. Corremos el Cliente:
+Ver Script: ./RunClient.sh
+
+*** Si no deja correr los sh, darle permisos: chmod +x "./ruta.sh"
+*** Linux -> Si no reconoce el terminal de vscode la palabra mongo, correr el siguiente comando:
+export LC_ALL=C.UTF-8; o colocarlo en la carpeta q debe.
+*** Se ha cambiado la ruta Inicial, asi q dentro de los proyectos .net, el bin esta mal, chekar con prrulises!

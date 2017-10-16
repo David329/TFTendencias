@@ -29,10 +29,3 @@ go get github.com/julienschmidt/httprouter //pa instalar el enrutador
     .
     .
 }
-
-//Correr el Query ./Mongo/lushflydbQueries.mongo para crear la estructura de la bd e insertar datos; ir a su carpeta util respectiva
-//Para correr el servidor:  ./RunServer.sh
-//Para correr el cliente: ./RunClient.sh
-
-*** Si no deja correr los sh, darle permisos: chmod +x "./ruta.sh"
-*** Linux -> Si no reconoce el terminal la palabra mongo, correr el siguiente comando export LC_ALL=C.UTF-8, o colocarlo en la carpeta q debe.

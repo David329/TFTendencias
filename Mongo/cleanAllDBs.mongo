@@ -1,6 +1,19 @@
-//Eliminamos todas las BDs, local no se usa en la replica, sino para configuraciones, ver: https://docs.mongodb.com/manual/reference/local-database/
+//Eliminamos todas las BDs. La base de datos "Local" no se usa en la replica, sino para configuraciones, ver: https://docs.mongodb.com/manual/reference/local-database/
 
+mongo localhost:27017
 db.adminCommand("listDatabases").databases.forEach( function (d) {
   if (d.name != "local" && d.name != "admin" && d.name != "config")
      db.getSiblingDB(d.name).dropDatabase();
-})
+});
+
+mongo localhost:27018
+db.adminCommand("listDatabases").databases.forEach( function (d) {
+  if (d.name != "local" && d.name != "admin" && d.name != "config")
+     db.getSiblingDB(d.name).dropDatabase();
+});
+
+mongo localhost:27019
+db.adminCommand("listDatabases").databases.forEach( function (d) {
+  if (d.name != "local" && d.name != "admin" && d.name != "config")
+     db.getSiblingDB(d.name).dropDatabase();
+});

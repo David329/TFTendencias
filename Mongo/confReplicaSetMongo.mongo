@@ -1,4 +1,4 @@
-//Una vez Iniciado las 3 BDs, pasamos a la configuracion
+//Una vez Iniciado las 3 BDs, pasamos a la configuracion, ejecutar: mongo localhost 27017
 
 //Comando de configuracion
 config = { _id: "lushfly", members:[
