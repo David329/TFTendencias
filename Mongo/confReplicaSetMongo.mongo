@@ -1,0 +1,20 @@
+//Una vez Iniciado las 3 BDs, pasamos a la configuracion
+
+//Comando de configuracion
+config = { _id: "lushfly", members:[
+    { _id: 0, host: "localhost:27017"},
+    { _id: 1, host: "localhost:27018"},
+    { _id: 2, host: "localhost:27019"}]
+};
+
+//Ejecutar comando de configuracion
+rs.initiate(config);
+
+//Verificar el Estado de las replicas, y su configuracion de quien es Primary y quienes son slaves.
+rs.status();
+
+
+//Con esto es suficiente.
+
+//Si la BD Slave, no reconoce a las consultas aplicar el siguiente comando:
+rs.slaveOk()

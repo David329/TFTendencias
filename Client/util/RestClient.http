@@ -4,6 +4,9 @@
 #GET
 GET http://localhost:8001/lstusers.html
 
+#GETByID
+GET http://localhost:8001/users/addedit/(?id)
+
 #POST
 POST http://localhost:8001/users
 
@@ -23,31 +26,15 @@ POST http://localhost:8001/users
     }
 }
 
-#PUT
-PUT http://localhost:8001/users/(?id)
-
-{
-    "firstname": "ffffcsdsd",
-    "lastname": "xtuki",
-    "passporttype": "DNI",
-    "passportnumber": "434",
-    "email": "david@gmail.com",
-    "password": "iksdi",
-    "personalcard": {
-        "card": "Visa",
-        "cardnumber": "2323",
-        "csc": "2232323",
-        "total": 2332,
-        "expirationdate": "23/21/1923"
-    }
-}
-
 #Delete
-DELETE http://localhost:8001/users/(?id)
+GET http://localhost:8001/users/delete/(?id)
 
 ###Flights
 #GET
-GET http://localhost:8001/flights
+GET http://localhost:8001/lstflights.html
+
+#GETByID
+GET http://localhost:8001/flights/addedit/(?id)
 
 #POST
 POST http://localhost:8001/flights
@@ -71,45 +58,15 @@ POST http://localhost:8001/flights
 	"seats": []
 }
 
-#PUT
-PUT http://localhost:8001/flights/(?id)
-
-{
-	"airplanemodel": "sadasdusho",
-	"airplanenumber": "2213",
-	"price": 32432,
-	"depart": {
-		"country": "peru",
-		"city": "Lima",
-		"td": "12:20",
-		"ta": "22:20"
-	},
-	"destin": {
-		"country": "Colombia",
-		"city": "Cali",
-		"td": "11:20",
-		"ta": "21:20"
-	},
-	"seats": [
-		{
-			"userid": "ABC",
-			"number": "2A",
-			"type": "Full"
-		},
-		{
-			"userid": "BBB",
-			"number": "32A",
-			"type": "Full"
-		}
-	]
-}
-
 #Delete
-DELETE http://localhost:8001/flights/delete/59e12931a5b2e1a8afd528c6
+GET http://localhost:8001/flights/delete/(?id)
 
 ###Bookings
 #GET
-GET http://localhost:8001/bookings
+GET http://localhost:8001/lstbookings.html
+
+#GETByID
+GET http://localhost:8001/bookings/addedit/(?id)
 
 #POST
 POST http://localhost:8001/bookings
@@ -124,12 +81,5 @@ POST http://localhost:8001/bookings
     }
 }
 
-#PUT
-PUT http://localhost:8001/bookings/(?id)
-
-{
-	TAMAL, PARLAR CON PRRULISES
-}
-
 #Delete
-DELETE http://localhost:8001/bookings/(?id)
+DELETE http://localhost:8001/bookings/delete/(?id)

@@ -30,7 +30,7 @@ go get github.com/julienschmidt/httprouter //pa instalar el enrutador
     .
 }
 
-//Correr el Query lushflydbQueries.mongo para crear la estructura de la bd e insertar datos; ir a su carpeta util respectiva
+//Correr el Query ./Mongo/lushflydbQueries.mongo para crear la estructura de la bd e insertar datos; ir a su carpeta util respectiva
 //Para correr el servidor:  ./RunServer.sh
 //Para correr el cliente: ./RunClient.sh
 

@@ -23,3 +23,9 @@
 
 ############################################### bin
 bin/*
+
+
+############################################### MongoDBFiles, Primary and two slaves
+Mongo/rs1/*
+Mongo/rs2/*
+Mongo/rs3/*

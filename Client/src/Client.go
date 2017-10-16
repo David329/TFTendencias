@@ -114,13 +114,13 @@ func main() {
 		router.POST("/users", Controller.PostPutUser)
 		router.GET("/users/delete/:id", Controller.DeleteUserByID)
 
-		// //Enrutadores-Flight
+		//Enrutadores-Flight
 		router.GET("/lstflights.html", Controller.GetAllFlight)
 		router.GET("/flights/addedit/:id", Controller.GetAddEditFlight)
 		router.POST("/flights", Controller.PostPutFlight)
 		router.GET("/flights/delete/:id", Controller.DeleteFlightByID)
 
-		// //Enrutadores-Booking
+		//Enrutadores-Booking
 		router.GET("/lstbookings.html", Controller.GetAllBooking)
 		router.GET("/bookings/addedit/:id", Controller.GetAddEditBooking)
 		router.POST("/bookings", Controller.PostPutBooking)
