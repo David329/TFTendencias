@@ -1,0 +1,214 @@
+//Creamos la bd, mongo entiende codigo en C++, asi q puedes usarlo :)
+use lushflydb;
+
+//Eliminar Todos los documentos de la coleccion si existen
+if(db.getCollectionNames()[0]!=""){
+    db.Users.remove({});
+    db.Flights.remove({});
+    db.Bookings.remove({});
+}
+
+//Creamos la coleccion Users, si pide una coleccion al empezar colocar: Users
+db.createCollection("Users");
+
+//Creamos la coleccion Flights, Refresh para actualizar las colecciones en el vscode
+db.createCollection("Flights");
+
+//Creamos la coleccion Bookings, Refresh para actualizar las colecciones en el vscode
+db.createCollection("Bookings");
+
+//DATA DE PRUEBA coleccion -> Users
+db.Users.insert({
+    "firstname": "David",
+    "lastname": "Silva",
+    "passporttype": "DNI",
+    "passportnumber": "72721611",
+    "email": "davidsilva3290@gmail.com",
+    "password": "Kazeia",
+    "personalcard": {
+        "card": "MasterLusho",
+        "cardnumber": "871258811",
+        "csc": "663",
+        "total": 79993,
+        "expirationdate": "23/12/2022"
+    }
+});
+
+db.Users.insert({
+    "firstname": "Gouuxd",
+    "lastname": "guauguau",
+    "passporttype": "DNI",
+    "passportnumber": "38483334",
+    "email": "prrn@gmail.com",
+    "password": "prrn",
+    "personalcard": {
+        "card": "VisLusho",
+        "cardnumber": "871258811",
+        "csc": "833",
+        "total": 728242,
+        "expirationdate": "10/12/2022"
+    }
+});
+
+db.Users.insert({
+    "firstname": "Maricarmen",
+    "lastname": "Peralta",
+    "passporttype": "DNI",
+    "passportnumber": "969696",
+    "email": "Tukiii@gmail.com",
+    "password": "Gomez",
+    "personalcard": {
+        "card": "nana",
+        "cardnumber": "844",
+        "csc": "122",
+        "total": 123442,
+        "expirationdate": "10/06/2022"
+    }
+});
+
+//Ejecutar las siguientes consultas para guardar en variables el ID de los objetos a tratar.
+var usuario1ID=db.Users.find({})[0]._id.str.toString();
+var usuario2ID=db.Users.find({})[1]._id.str.toString();
+var usuario3ID=db.Users.find({})[2]._id.str.toString();
+
+//DATA DE PRUEBA coleccion -> Flights
+db.Flights.insert({
+    "airplanemodel": "Iber",
+    "airplanenumber": "I242",
+    "price": 599,
+    "depart": {
+        "country": "Peru",
+        "city": "Lima",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "destin": {
+        "country": "USA",
+        "city": "NY",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "seats": [
+		{
+			"userid": usuario1ID,
+			"number": "52A",
+			"type": "Full"
+		},
+		{
+			"userid": usuario2ID,
+			"number": "11A",
+			"type": "Semi Full"
+		},
+        {
+			"userid": usuario3ID,
+			"number": "24C",
+			"type": "SDE"
+		}
+    ]
+});
+
+db.Flights.insert({
+    "airplanemodel": "ANDER22",
+    "airplanenumber": "AN223",
+    "price": 122,
+    "depart": {
+        "country": "Colombia",
+        "city": "Cali",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "destin": {
+        "country": "Luna",
+        "city": "DVD",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "seats": [
+		{
+			"userid": usuario1ID,
+			"number": "230A",
+			"type": "Full"
+		}
+    ]
+});
+
+db.Flights.insert({
+    "airplanemodel": "XE73",
+    "airplanenumber": "X55",
+    "price": 320,
+    "depart": {
+        "country": "Espana",
+        "city": "Granada",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "destin": {
+        "country": "Chile",
+        "city": "Santiago",
+        "td": "01/01/2019",
+        "ta": "01/01/2019"
+    },
+    "seats": [
+		{
+			"userid": usuario2ID,
+			"number": "772A",
+			"type": "Full"
+		},
+        {
+			"userid": usuario1ID,
+			"number": "11A",
+			"type": "Full"
+		}
+    ]
+});
+
+//Ejecutar las siguientes consultas para guardar en variables el ID de los objetos a tratar.
+var flight1ID=db.Flights.find({})[0]._id.str.toString();
+var flight2ID=db.Flights.find({})[1]._id.str.toString();
+var flight3ID=db.Flights.find({})[2]._id.str.toString();
+
+//DATA DE PRUEBA coleccion -> Bookings
+db.Bookings.insert({
+    "userid": usuario3ID,
+    "flightid": flight1ID,
+    "personalseat": {
+        "userid": usuario3ID,
+        "number": "52A",
+        "type": "full"
+    }
+});
+
+db.Bookings.insert({
+    "userid": usuario1ID,
+    "flightid": flight2ID,
+    "personalseat": {
+        "userid": usuario1ID,
+        "number": "230A",
+        "type": "full"
+    }
+});
+
+db.Bookings.insert({
+    "userid": usuario2ID,
+    "flightid": flight3ID,
+    "personalseat": {
+        "userid": usuario2ID,
+        "number": "772A",
+        "type": "full"
+    }
+});
+
+////////////Comanditos po
+//Consultar
+db.Users.find({}).pretty();
+db.Flights.find({}).pretty();
+db.Bookings.find({}).pretty();
+
+//Cantidad de documentos
+db.Users.count();
+db.Flights.count();
+db.Bookings.count();
+
+
+//Mejor Ejecutarlo en el shell, la extension(MongoDB) de vscode esta fallando o solo a mi :(
+//cls pa limpiar la consola dentro de mongo 

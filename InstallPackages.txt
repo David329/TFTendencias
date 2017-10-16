@@ -1,4 +1,7 @@
-//Necesitamos setear el goroot y gopath en user settings de file preferences, pa verlo:  go env
+//Necesitamos indicar el goroot y gopath en user settings de file preferences, pa verlo:  go env
+//Necesitamos indicar el mongo shell en fie preferences, pa verlo: which mongo
+
+//Instalar mongo y ejecutar el servidor, por defecto puerto:27017
 
 //Instalar los siguientes paquetes
 go get github.com/streadway/amqp //pa instalar el message broker
@@ -7,3 +10,29 @@ go get gopkg.in/mgo.v2/bson //pa instalar el json binario q nos servira parsear 
 go get github.com/julienschmidt/httprouter //pa instalar el enrutador
 
 //Pa ver el intellisense, tenemos q instalar goreturn, en un archivo go presionar: Ctrl+Alt+F, Install ALL
+
+
+//UserSettings.json
+{
+    .
+    .
+    .
+    //GO
+    "go.gopath": "/root/go",
+    "go.goroot": "/usr/local/go",
+    "go.formatOnSave": true,
+    "go.formatTool": "goreturns",
+
+    //Mongo
+    "mongo.shell.path": "/usr/bin/mongo"
+    .
+    .
+    .
+}
+
+//Correr el Query lushflydbQueries.mongo para crear la estructura de la bd e insertar datos; ir a su carpeta util respectiva
+//Para correr el servidor:  ./RunServer.sh
+//Para correr el cliente: ./RunClient.sh
+
+*** Si no deja correr los sh, darle permisos: chmod +x "./ruta.sh"
+*** Linux -> Si no reconoce el terminal la palabra mongo, correr el siguiente comando export LC_ALL=C.UTF-8, o colocarlo en la carpeta q debe.
