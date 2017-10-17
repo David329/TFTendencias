@@ -1,14 +1,14 @@
-###RestClient para servicio Cliente: http://localhost:8001/
+###RestClient para servicio Cliente: http://localhost:9000/
 #(?id)= ingresar id manual
 ###Users
 #GET
-GET http://localhost:8001/lstusers.html
+GET http://localhost:9000/lstusers.html
 
 #GETByID
-GET http://localhost:8001/users/addedit/(?id)
+GET http://localhost:9000/users/addedit/(?id)
 
 #POST
-POST http://localhost:8001/users
+POST http://localhost:9000/users
 
 {
     "firstname": "luis",
@@ -27,17 +27,17 @@ POST http://localhost:8001/users
 }
 
 #Delete
-GET http://localhost:8001/users/delete/(?id)
+GET http://localhost:9000/users/delete/(?id)
 
 ###Flights
 #GET
-GET http://localhost:8001/lstflights.html
+GET http://localhost:9000/lstflights.html
 
 #GETByID
-GET http://localhost:8001/flights/addedit/(?id)
+GET http://localhost:9000/flights/addedit/(?id)
 
 #POST
-POST http://localhost:8001/flights
+POST http://localhost:9000/flights
 
 {
 	"airplanemodel": "Donsho",
@@ -59,17 +59,17 @@ POST http://localhost:8001/flights
 }
 
 #Delete
-GET http://localhost:8001/flights/delete/(?id)
+GET http://localhost:9000/flights/delete/(?id)
 
 ###Bookings
 #GET
-GET http://localhost:8001/lstbookings.html
+GET http://localhost:9000/lstbookings.html
 
 #GETByID
-GET http://localhost:8001/bookings/addedit/(?id)
+GET http://localhost:9000/bookings/addedit/(?id)
 
 #POST
-POST http://localhost:8001/bookings
+POST http://localhost:9000/bookings
 
 {
     "userid": "(?id)",
@@ -82,4 +82,4 @@ POST http://localhost:8001/bookings
 }
 
 #Delete
-DELETE http://localhost:8001/bookings/delete/(?id)
+DELETE http://localhost:9000/bookings/delete/(?id)

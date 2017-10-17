@@ -1,11 +1,11 @@
-###RestClient para servicio Rest: http://localhost:8000/
+###RestClient para servicio Rest: http://localhost:8200/
 #(?id)= ingresar id manual
 ###Users
 #GET
-GET http://localhost:8000/users
+GET http://localhost:8200/users
 
 #POST
-POST http://localhost:8000/users
+POST http://localhost:8200/users
 
 {
     "firstname": "luis",
@@ -24,7 +24,7 @@ POST http://localhost:8000/users
 }
 
 #PUT
-PUT http://localhost:8000/users/(?id)
+PUT http://localhost:8200/users/(?id)
 
 {
     "firstname": "ffffcsdsd",
@@ -43,14 +43,14 @@ PUT http://localhost:8000/users/(?id)
 }
 
 #Delete
-DELETE http://localhost:8000/users/(?id)
+DELETE http://localhost:8200/users/(?id)
 
 ###Flights
 #GET
-GET http://localhost:8000/flights
+GET http://localhost:8200/flights
 
 #POST
-POST http://localhost:8000/flights
+POST http://localhost:8200/flights
 
 {
 	"airplanemodel": "Donsho",
@@ -72,7 +72,7 @@ POST http://localhost:8000/flights
 }
 
 #PUT
-PUT http://localhost:8000/flights/(?id)
+PUT http://localhost:8200/flights/(?id)
 
 {
 	"airplanemodel": "sadasdusho",
@@ -105,14 +105,14 @@ PUT http://localhost:8000/flights/(?id)
 }
 
 #Delete
-DELETE http://localhost:8000/flights/(?id)
+DELETE http://localhost:8200/flights/(?id)
 
 ###Bookings
 #GET
-GET http://localhost:8000/bookings
+GET http://localhost:8200/bookings
 
 #POST
-POST http://localhost:8000/bookings
+POST http://localhost:8200/bookings
 
 {
     "userid": "(?id)",
@@ -125,11 +125,11 @@ POST http://localhost:8000/bookings
 }
 
 #PUT
-PUT http://localhost:8000/bookings/(?id)
+PUT http://localhost:8200/bookings/(?id)
 
 {
 	TAMAL, PARLAR CON PRRULISES
 }
 
 #Delete
-DELETE http://localhost:8000/bookings/(?id)
+DELETE http://localhost:8200/bookings/(?id)

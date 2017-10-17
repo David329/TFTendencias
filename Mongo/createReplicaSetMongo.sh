@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#IMPORTANTE: Primero se para el servicio mongod -> service mongod stop
+#IMPORTANTE: Primero se para el servicio mongod:
+sudo service mongod restart
+sudo service mongod stop
 
 #Nos ubicamos en la ruta ./Mongo y ejecutamos los siguientes comandos:
 

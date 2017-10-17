@@ -133,9 +133,9 @@ func RenderIndex(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 		`
 		<h3>Menu</h3>
 		<ul>
-			<li><a href="http://localhost:8001/lstusers.html">Users</a></li>
-			<li><a href="http://localhost:8001/lstflights.html">Flights</a></li>
-			<li><a href="http://localhost:8001/lstbookings.html">Bookings</a></li>
+			<li><a href="http://localhost:9000/lstusers.html">Users</a></li>
+			<li><a href="http://localhost:9000/lstflights.html">Flights</a></li>
+			<li><a href="http://localhost:9000/lstbookings.html">Bookings</a></li>
 	  	</ul> 
 		`),
 	)

@@ -1,5 +1,6 @@
 //Eliminamos todas las BDs. La base de datos "Local" no se usa en la replica, sino para configuraciones, ver: https://docs.mongodb.com/manual/reference/local-database/
 
+//Asegurarnos que se estan ejecutando las Bases de datos: 27017, 27018 y 27019.
 mongo localhost:27017
 db.adminCommand("listDatabases").databases.forEach( function (d) {
   if (d.name != "local" && d.name != "admin" && d.name != "config")

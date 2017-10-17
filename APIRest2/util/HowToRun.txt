@@ -1,0 +1,4 @@
+//Pa correr APIRest2
+ejecutar el archivo APIRest.sh(linux, en windows con gitbash): ./RunAPIRest.sh
+	si no funciona por permisos, otorgarle de la siguiente manera:chmod +x ./RunAPIRest.sh
+	si no funciona por paquetes, instalarlos como se menciona en archivo InstallPackages.txt

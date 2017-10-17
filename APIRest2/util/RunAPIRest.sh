@@ -15,17 +15,17 @@ if [ ! -d bin ]; then
   echo mkdir bin
 fi
 
-#compilamos el servidor
-cd ./Server/src
-go build -o "../../bin/Server" ./Server.go
+#compilamos el APIRest2
+cd ./APIRest2/src
+go build -o "../../bin/APIRest2" ./APIRest.go
 
-#corremos el servidor
-read -p "Quieres levantar el Servidor?(+si)" par
+#corremos el APIRest2
+read -p "Quieres levantar el APIRest2?(+si)" par
 if test "$par" = "si"
 then
-     ./../../bin/Server
+     ./../../bin/APIRest2
 else
-     echo "Compilado en Bin Server, pero no ejecutado"	
+     echo "Compilado en Bin APIRest2, pero no ejecutado"	
 fi
 
 ##NO CORRER DESDE LA MISMA RUTA LOS BINARIOS, X EL ERROR MAGICO!

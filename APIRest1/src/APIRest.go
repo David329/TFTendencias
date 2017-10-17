@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"sync"
 
-	Controller "./Controller"
+	Routes "./Routes"
 
 	"github.com/julienschmidt/httprouter"
 	//	"github.com/streadway/amqp"
@@ -107,28 +107,29 @@ func main() {
 		router := httprouter.New()
 
 		//Enrutadores-User
-		router.GET("/", Controller.RenderIndex)
-
-		router.GET("/lstusers.html", Controller.GetAllUser)
-		router.GET("/users/addedit/:id", Controller.GetAddEditUser)
-		router.POST("/users", Controller.PostPutUser)
-		router.GET("/users/delete/:id", Controller.DeleteUserByID)
+		router.GET("/users", Routes.GetAllUser)
+		router.GET("/users/:id", Routes.GetUserByID)
+		router.POST("/users", Routes.PostUser)
+		router.PUT("/users/:id", Routes.PutUserByID)
+		router.DELETE("/users/:id", Routes.DeleteUserByID)
 
 		//Enrutadores-Flight
-		router.GET("/lstflights.html", Controller.GetAllFlight)
-		router.GET("/flights/addedit/:id", Controller.GetAddEditFlight)
-		router.POST("/flights", Controller.PostPutFlight)
-		router.GET("/flights/delete/:id", Controller.DeleteFlightByID)
+		router.GET("/flights", Routes.GetAllFlight)
+		router.GET("/flights/:id", Routes.GetFlightByID)
+		router.POST("/flights", Routes.PostFlight)
+		router.PUT("/flights/:id", Routes.PutFlightByID)
+		router.DELETE("/flights/:id", Routes.DeleteFlightByID)
 
 		//Enrutadores-Booking
-		router.GET("/lstbookings.html", Controller.GetAllBooking)
-		router.GET("/bookings/addedit/:id", Controller.GetAddEditBooking)
-		router.POST("/bookings", Controller.PostPutBooking)
-		router.GET("/bookings/delete/:id", Controller.DeleteBookingByID)
+		router.GET("/bookings", Routes.GetAllBooking)
+		router.GET("/bookings/:id", Routes.GetBookingByID)
+		router.POST("/bookings", Routes.PostBooking)
+		router.PUT("/bookings/:id", Routes.PutBookingByID)
+		router.DELETE("/bookings/:id", Routes.DeleteBookingByID)
 
 		//Escuchando el servidor
-		log.Print("Escuchando en 127.0.0.1:8001...")
-		http.ListenAndServe(":8001", router)
+		log.Print("Escuchando en 127.0.0.1:8100...")
+		http.ListenAndServe(":8100", router)
 	}
 
 	Parallelize(listenFirstChannel, listenSecondChannel, listenServer)

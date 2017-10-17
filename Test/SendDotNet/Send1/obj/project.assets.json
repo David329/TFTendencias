@@ -4192,11 +4192,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/root/Escritorio/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/Send1.csproj",
+      "projectUniqueName": "/home/kazeia/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/Send1.csproj",
       "projectName": "Send1",
-      "projectPath": "/root/Escritorio/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/Send1.csproj",
+      "projectPath": "/home/kazeia/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/Send1.csproj",
       "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/root/Escritorio/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/obj/",
+      "outputPath": "/home/kazeia/dev/upc/Tendencias/TF/Test/SendDotNet/Send1/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"

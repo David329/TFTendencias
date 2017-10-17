@@ -3,6 +3,8 @@
 ## para agregar permisos
 # Agregar permisos al script chmod +x ./run.sh
 
+#Levantamos mongo
+sudo service mongod start
 
 #Regresamos a la raiz para crear la carpeta bin
 cd ./../../
@@ -13,17 +15,17 @@ if [ ! -d bin ]; then
   echo mkdir bin
 fi
 
-#compilamos el cliente
-cd ./Client/src
-go build -o "../../bin/Client" ./Client.go
+#compilamos el APIRest1
+cd ./APIRest1/src
+go build -o "../../bin/APIRest1" ./APIRest.go
 
-#corremos el cliente
-read -p "Quieres levantar el Cliente?(+si)" par
+#corremos el APIRest1
+read -p "Quieres levantar el APIRest1?(+si)" par
 if test "$par" = "si"
 then
-     ./../../bin/Client
+     ./../../bin/APIRest1
 else
-     echo "Compilado en Bin Client, pero no ejecutado"	
+     echo "Compilado en Bin APIRest1, pero no ejecutado"	
 fi
 
 ##NO CORRER DESDE LA MISMA RUTA LOS BINARIOS, X EL ERROR MAGICO!
