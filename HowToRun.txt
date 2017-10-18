@@ -15,11 +15,12 @@ Ver Script: ./Mongo/lushflydbQueries.mongo
 5. Corremos la API Rest:
 Ver Script:  ./APIRest{#}/APIRest.sh
 
-6. Corremos el el servidor Web:
+6. Corremos el Balanceador de Carga del APIRest, Colocarnos en la ruta correspondiente:
+go run ./BalancerAPIRest.go //x  ahora asi, esta en construccion
+
+7. Corremos el el servidor Web:
 Ver Script: ./WebServer/RunWebServer.sh
 
-7. Corremos el Balanceador de Carga del APIRest, Colocarnos en la ruta correspondiente:
-go run ./BalancerAPIRest.go //x  ahora asi, esta en construccion
 
 
 *** Si no deja correr los sh, darle permisos: chmod +x "./ruta.sh"

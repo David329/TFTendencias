@@ -1,0 +1,3 @@
+//Pa correr APIRest3
+Este 3er APIRest esta apagado, y solo se levanta si existe demasiada carga en los 2 servidores activos.
+Se levanta solo mediante el BalancerAPIRest
