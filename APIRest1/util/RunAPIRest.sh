@@ -4,10 +4,10 @@
 # Agregar permisos al script chmod +x ./run.sh
 
 #Levantamos mongo
-sudo service mongod start
+#sudo service mongod start
 
 #Regresamos a la raiz para crear la carpeta bin
-cd ./../../
+#cd ./../../
 
 #creamos la estructura
 
@@ -20,12 +20,6 @@ cd ./APIRest1/src
 go build -o "../../bin/APIRest1" ./APIRest.go
 
 #corremos el APIRest1
-read -p "Quieres levantar el APIRest1?(+si)" par
-if test "$par" = "si"
-then
-     ./../../bin/APIRest1
-else
-     echo "Compilado en Bin APIRest1, pero no ejecutado"	
-fi
+./../../bin/APIRest1
 
 ##NO CORRER DESDE LA MISMA RUTA LOS BINARIOS, X EL ERROR MAGICO!

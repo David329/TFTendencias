@@ -12,15 +12,8 @@ Ver Script: ./Mongo/confReplicaSetMongo.mongo
 4. Luego de que las 3 Bases de Datos estan conectadas en Modo Replica, Insertamos datos de prueba:
 Ver Script: ./Mongo/lushflydbQueries.mongo
 
-5. Corremos la API Rest:
-Ver Script:  ./APIRest{#}/APIRest.sh
-
-6. Corremos el Balanceador de Carga del APIRest, Colocarnos en la ruta correspondiente:
-go run ./BalancerAPIRest.go //x  ahora asi, esta en construccion
-
-7. Corremos el el servidor Web:
-Ver Script: ./WebServer/RunWebServer.sh
-
+5. Corremos el Script - Que corre( ApiRest1, ApiRest2, APIRestBalancer, WebServer1, WebServer2 y WebServerBalancer):
+./Run.sh
 
 
 *** Si no deja correr los sh, darle permisos: chmod +x "./ruta.sh"
