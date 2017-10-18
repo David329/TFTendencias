@@ -1,0 +1,85 @@
+###RestClient para servicio Cliente: http://localhost:9000/
+#(?id)= ingresar id manual
+###Users
+#GET
+GET http://localhost:9000/lstusers.html
+
+#GETByID
+GET http://localhost:9000/users/addedit/(?id)
+
+#POST
+POST http://localhost:9000/users
+
+{
+    "firstname": "luis",
+    "lastname": "veliz",
+    "passporttype": "DNI",
+    "passportnumber": "43434",
+    "email": "lusho@gmail.com",
+    "password": "lss",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "4423",
+        "csc": "663",
+        "total": 433,
+        "expirationdate": "23/21/1623"
+    }
+}
+
+#Delete
+GET http://localhost:9000/users/delete/(?id)
+
+###Flights
+#GET
+GET http://localhost:9000/lstflights.html
+
+#GETByID
+GET http://localhost:9000/flights/addedit/(?id)
+
+#POST
+POST http://localhost:9000/flights
+
+{
+	"airplanemodel": "Donsho",
+	"airplanenumber": "55213",
+	"price": 1232,
+	"depart": {
+		"country": "Ecuadro",
+		"city": "NM",
+		"td": "12:20",
+		"ta": "22:20"
+	},
+	"destin": {
+		"country": "USa",
+		"city": "NY",
+		"td": "11:20",
+		"ta": "21:20"
+	},
+	"seats": []
+}
+
+#Delete
+GET http://localhost:9000/flights/delete/(?id)
+
+###Bookings
+#GET
+GET http://localhost:9000/lstbookings.html
+
+#GETByID
+GET http://localhost:9000/bookings/addedit/(?id)
+
+#POST
+POST http://localhost:9000/bookings
+
+{
+    "userid": "(?id)",
+    "flightid": "(?id)",
+    "personalseat": {
+        "userid": "(?id)",
+        "number": "33A",
+        "type": "full"
+    }
+}
+
+#Delete
+DELETE http://localhost:9000/bookings/delete/(?id)

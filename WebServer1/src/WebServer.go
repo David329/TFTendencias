@@ -127,8 +127,8 @@ func main() {
 		router.GET("/bookings/delete/:id", Controller.DeleteBookingByID)
 
 		//Escuchando el servidor
-		log.Print("Escuchando en 127.0.0.1:9000...")
-		http.ListenAndServe(":9000", router)
+		log.Print("Escuchando en 127.0.0.1:9100...")
+		http.ListenAndServe(":9100", router)
 	}
 
 	Parallelize(listenFirstChannel, listenSecondChannel, listenServer)

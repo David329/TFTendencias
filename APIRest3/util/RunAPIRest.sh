@@ -1,4 +1,4 @@
-cd ./../
+cd ./../../
 if [ ! -d bin ]; then
   echo mkdir bin
 fi

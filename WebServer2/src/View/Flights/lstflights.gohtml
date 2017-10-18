@@ -1,0 +1,28 @@
+{{ define "lstflights" }}
+  {{ template "header" }}
+    <a style="background-color: #FF0000;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/">Atras</a>
+    <table border="1">
+      <thead>
+        <tr>
+        <td>AirplaneModel</td>
+        <td>AirplaneNumber</td>
+        <td>Price</td>
+        <td>Action</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range . }}
+        <tr>
+        <td>{{ .AirplaneModel }}</td>
+        <td> {{ .AirplaneNumber }} </td>
+        <td>{{ .Price }} </td>
+        <td><a href="/flights/addedit/{{ .ID }}">Edit</a> | <a onclick="return confirm('Deseas Eliminar este Vuelo?')" href="/flights/delete/{{ .ID }}">Delete</a><td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+    <a style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/flights/addedit/0">Agregar</a>
+  {{ template "footer" }}
+{{ end }}

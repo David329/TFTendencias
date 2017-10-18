@@ -63,7 +63,7 @@ func turnThirdServer() {
 		return
 	}
 	activeServers++
-	cmdStr := "./../APIRest3/util/RunAPIRest.sh"
+	cmdStr := "./../../APIRest3/util/RunAPIRest.sh"
 	cmd := exec.Command("/bin/sh", "-c", cmdStr)
 	_, err := cmd.Output()
 	if err != nil {
@@ -82,7 +82,7 @@ func main() {
 			log.Fatalf("Failed to connect to HostBalancer: %s", err)
 		}
 
-		log.Printf("listening on %s, balancing %s and %s like overload", hostBalancer, hostsServers[0], hostsServers[1])
+		log.Printf("listening on %s, balancing %s and %s .%s like overload", hostBalancer, hostsServers[0], hostsServers[1], hostsServers[2])
 
 		for {
 			conn, err := ln.Accept()

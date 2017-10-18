@@ -1,0 +1,141 @@
+{{ define "addeditflight" }}
+  {{ template "header" }}
+
+  <script type="text/javascript">
+    //ESTE METODO ES PARA QUE EL COMBOBOX SE COMPORTE DINAMICAMENTE ENTRE LA CANTIDAD DE ASIENTOS Y SU INFORMACION
+            function addSeat($i) {
+                var divAsientos = document.getElementById("asientos");
+                var cantAsientos = divAsientos.childElementCount;
+                var cantAsientosFaltantes = $i - cantAsientos;
+    
+                if (cantAsientosFaltantes > 0) {
+                    for (var i = 0; i < cantAsientosFaltantes; i++) {
+                        var element = document.createElement("h3");
+                        element.setAttribute("class", "seatClass");
+                        element.textContent = "Seat";
+                        divAsientos.appendChild(element);
+                    }
+                    var seatArrayElements = document.getElementsByClassName("seatClass");
+                	var camposPorLlenar=seatArrayElements.length-cantAsientos;
+                    if(camposPorLlenar>0){
+                    for (var i = cantAsientos; i < seatArrayElements.length; i++) {
+                        seatArrayElements[i].appendChild(document.createElement("br"));
+    
+                        var seatElement = document.createElement("div");
+                        seatElement.textContent = "UserID:";
+                        seatArrayElements[i].appendChild(seatElement);
+                        seatElement = document.createElement("input");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "UserID");
+                        seatElement.setAttribute("placeholder", "UserID");
+                        seatArrayElements[i].appendChild(seatElement);
+                        
+                        seatElement = document.createElement("div");
+                        seatElement.textContent = "Number:";
+                        seatArrayElements[i].appendChild(seatElement);
+                        seatElement = document.createElement("input");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "Number");
+                        seatElement.setAttribute("placeholder", "Number");
+                        seatArrayElements[i].appendChild(seatElement);
+                        
+                        seatElement = document.createElement("div");
+                        seatElement.textContent = "Type:";
+                        seatArrayElements[i].appendChild(seatElement);
+                        seatElement = document.createElement("input");
+                        seatElement.setAttribute("type", "text");
+                        seatElement.setAttribute("name", "Type");
+                        seatElement.setAttribute("placeholder", "Type");
+                        seatArrayElements[i].appendChild(seatElement);
+    
+                    }
+                    }
+                } else {
+                    while (cantAsientosFaltantes != 0) {
+                        divAsientos.removeChild(divAsientos.childNodes[cantAsientos]);
+                        cantAsientos--;
+                        cantAsientosFaltantes++;
+                    }
+                }
+    
+            }
+  </script>
+    <h2>{{if .ID}} Editar {{else}} Agregar {{end}}</h2>
+    <a style="background-color: #FF0000;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+    href="/lstflights.html">Atras</a>
+
+      <form method="POST" action="/flights">
+      <h3>Personal Information</h3>
+      <p>
+          <input type="hidden" name="ID" value="{{if .ID}}{{.ID}}{{else}}0{{end}}">
+          Airplane Model:
+          <input type="text" name="AirplaneModel" placeholder="AirplaneModel" required value="{{.AirplaneModel}}">
+          <br>
+          Airplane Number:
+          <input type="text" name="AirplaneNumber" placeholder="AirplaneNumber" required value="{{.AirplaneNumber}}">
+          <br>
+          Price:
+          <input type="text" name="Price" placeholder="Price" required value="{{.Price}}">
+          <br>
+          <br>
+          <h3>Departure</h3>
+          Country:
+          <input type="text" name="DepartCountry" placeholder="Country" required value="{{.Depart.Country}}">
+          <br>
+          City:
+          <input type="text" name="DepartCity" placeholder="City" required value="{{.Depart.City}}">
+          <br>
+          TD:
+          <input type="text" name="DepartTD" placeholder="TD" required value="{{.Depart.TD}}">
+          <br>
+          TA:
+          <input type="text" name="DepartTA" placeholder="TA" required value="{{.Depart.TA}}">
+          <br>
+          <br>
+          <h3>Destination</h3>
+          Country:
+          <input type="text" name="DestinCountry" placeholder="Country" required value="{{.Destin.Country}}">
+          <br>
+          City:
+          <input type="text" name="DestinCity" placeholder="City" required value="{{.Destin.City}}">
+          <br>
+          TD:
+          <input type="text" name="DestinTD" placeholder="TD" required value="{{.Destin.TD}}">
+          <br>
+          TA:
+          <input type="text" name="DestinTA" placeholder="TA" required value="{{.Destin.TA}}">
+          <br>
+          <br>
+          <br>
+          <h3>Seats: Enter the Seats for the lusho: </h3>
+          <select onchange="addSeat(value);">
+            <option selected disabled>Count of Seats</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+<!-- TENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER CUIDADO CON LOS WHITESPACES DE TEMPLATES EN GOOOOOOOOOOOO PTMMMMMMM ME HIZO PERDER EL TIEMPO TMRRRRR -->
+        <div id="asientos">
+            {{ range .Seats -}}
+                <h3 class="seatClass">Seat
+                    <br>
+                    <div>UserID:</div>
+                    <input type="text" name="UserID" value="{{.UserID}}">
+
+                    <div>Number:</div>
+                    <input type="text" name="Number" value="{{.Number}}">
+
+                    <div>Type:</div>
+                    <input type="text" name="Type" value="{{.Type}}">
+                </h3>{{- end}}</div>
+        <br>
+        <!-- SI VAS A MOVER ESTE DIV PRRULISES ME AVISAS!!! -->
+          <input style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+          type="submit" value="{{if .ID}}Editar{{else}}Agregar{{end}}">
+      </p>
+      </form>
+  {{ template "footer" }}
+{{ end }}

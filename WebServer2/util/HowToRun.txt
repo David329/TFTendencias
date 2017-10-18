@@ -1,0 +1,4 @@
+//Pa correr el Servidor Web
+ejecutar el archivo RunWebServer.sh(linux, en windows con gitbash): ./RunWebServer.sh
+	si no funciona por permisos, otorgarle de la siguiente manera:chmod +x ./RunWebServer.sh
+	si no funciona por paquetes, instalarlos como se menciona en archivo InstallPackages.txt
