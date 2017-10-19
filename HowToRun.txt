@@ -1,15 +1,15 @@
-0. Opcion Alternativa, para no ejecutar paso(1,2,3,4): Cambiar archivo -> ./APIRest{#}/src/DB/Access.go; Linea 13; session, err := mgo.Dial("localhost") y levantar el mongo
+0. Opcion Alternativa, para no ejecutar paso(1,2): Cambiar archivo -> ./APIRest{#}/src/DB/Access.go; Linea 13 y solo colocar: session, err := mgo.Dial("localhost") y levantar el mongo
 
 1. Crear las bases de datos en Replicas:
 Ver Script: ./Mongo/createReplicaSetMongo.sh
 
-2. Limpar las bases de datos que se encuentren en las Replicas: 27017, 27018 y 27019:
-Ver Script: ./Mongo/cleanAllDBs.mongo
-
-3. Luego de que las 3 Bases de datos esten en ejecucion, Necesitaremos confiurarlos como Replica Set Abrir otra terminal:
+2. Luego de que las 3 Bases de datos esten en ejecucion, Necesitaremos confiurarlos como Replica Set Abrir otra terminal:
 Ver Script: ./Mongo/confReplicaSetMongo.mongo
 
-4. Luego de que las 3 Bases de Datos estan conectadas en Modo Replica, Insertamos datos de prueba:
+3. Limpar las bases de datos que se encuentren en las Replicas: 27017, 27018 y 27019; en Opcion Alternativa solo eliminar las bases de datos local:
+Ver Script: ./Mongo/cleanAllDBs.mongo
+
+4. Luego de que las 3 Bases de Datos estan conectadas en Modo Replica o en opcion alternativa -> solo la base de datos local esta conectada, Insertamos datos de prueba en la bd PRIMARY:
 Ver Script: ./Mongo/lushflydbQueries.mongo
 
 5. Corremos el Script - Que corre( ApiRest1, ApiRest2, APIRestBalancer, WebServer1, WebServer2 y WebServerBalancer):

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#xterm turn on mongo
+xterm -e sudo service mongod start &
+
 #xterm APIRest1
 xterm -e ./APIRest1/util/RunAPIRest.sh & 
 

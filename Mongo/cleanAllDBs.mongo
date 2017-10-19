@@ -1,20 +1,33 @@
-//Eliminamos todas las BDs. La base de datos "Local" no se usa en la replica, sino para configuraciones, ver: https://docs.mongodb.com/manual/reference/local-database/
+//Eliminamos todas las BDs. 
 
+//Si optaste por la opcion alterna, solo debes eliminar todas las bases de datos q existen en el servidor por defecto. Ademas, La base de datos "Local" no se usa en la replica, sino para configuraciones, ver: https://docs.mongodb.com/manual/reference/local-database/
+sh-> sudo service mongod start
+sh-> mongo
+mongo:
+      db.adminCommand("listDatabases").databases.forEach( function (d) {
+        if (d.name != "local" && d.name != "admin" && d.name != "config")
+          db.getSiblingDB(d.name).dropDatabase();
+      });
+
+
+//Si optaste por 
 //Asegurarnos que se estan ejecutando las Bases de datos: 27017, 27018 y 27019.
-mongo localhost:27017
-db.adminCommand("listDatabases").databases.forEach( function (d) {
-  if (d.name != "local" && d.name != "admin" && d.name != "config")
-     db.getSiblingDB(d.name).dropDatabase();
-});
+//Si no tiene la carpeta rs1, rs2 y rs3; no es necesario realizar estos pasos, xq no tienes base de datos, solo deberias llenar la base de datos primmary, ejecutar el query lushflydbQueries.mongo en el shell de mongo.
+sh-> mongo localhost:27017
+mongo:
+      db.adminCommand("listDatabases").databases.forEach( function (d) {
+        if (d.name != "local" && d.name != "admin" && d.name != "config")
+          db.getSiblingDB(d.name).dropDatabase();
+      });
 
-mongo localhost:27018
-db.adminCommand("listDatabases").databases.forEach( function (d) {
-  if (d.name != "local" && d.name != "admin" && d.name != "config")
-     db.getSiblingDB(d.name).dropDatabase();
-});
+sh-> mongo localhost:27018
+      db.adminCommand("listDatabases").databases.forEach( function (d) {
+        if (d.name != "local" && d.name != "admin" && d.name != "config")
+          db.getSiblingDB(d.name).dropDatabase();
+      });
 
-mongo localhost:27019
-db.adminCommand("listDatabases").databases.forEach( function (d) {
-  if (d.name != "local" && d.name != "admin" && d.name != "config")
-     db.getSiblingDB(d.name).dropDatabase();
-});
+sh-> mongo localhost:27019
+      db.adminCommand("listDatabases").databases.forEach( function (d) {
+        if (d.name != "local" && d.name != "admin" && d.name != "config")
+          db.getSiblingDB(d.name).dropDatabase();
+      });
