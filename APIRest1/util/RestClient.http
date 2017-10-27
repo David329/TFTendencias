@@ -8,10 +8,10 @@ GET http://localhost:8100/users
 POST http://localhost:8100/users
 
 {
-    "firstname": "luis",
-    "lastname": "veliz",
-    "passporttype": "DNI",
-    "passportnumber": "43434",
+    "firstname": "VVVVVV",
+    "lastname": "VVVVVVVV",
+    "passporttype": "VVVVVV",
+    "passportnumber": "VVVVVVV",
     "email": "lusho@gmail.com",
     "password": "lss",
     "personalcard": {

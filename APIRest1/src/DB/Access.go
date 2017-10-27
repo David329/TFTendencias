@@ -17,3 +17,17 @@ func GetDbSession() *mgo.Session {
 	session.SetMode(mgo.Monotonic, true)
 	return session
 }
+
+//InsertObj Metodo de insercion generico
+func InsertObj(obj interface{}, entitieType string) {
+	session := GetDbSession()
+	var c *mgo.Collection
+	if entitieType == "Users" {
+		c = session.DB("lushflydb").C("Users")
+	}
+	err := c.Insert(obj)
+	if err != nil {
+		log.Fatal(err)
+	}
+	session.Close()
+}

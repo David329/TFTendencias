@@ -59,8 +59,6 @@ func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 //PostUser Inserta un nuevo vuelo
 func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	session := DB.GetDbSession()
-
 	//obtener el json y lo guardo en body
 	var obj Entities.User
 	body, err := ioutil.ReadAll(req.Body)
@@ -70,17 +68,7 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	//parseo de json a User, nose si parsea mas de 1 objeto..., seguro con un for o algo
 	json.Unmarshal(body, &obj)
-
-	//inserto en la bd
-	c := session.DB("lushflydb").C("Users")
-
-	err = c.Insert(obj)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	DB.InsertObj(obj, "Users")
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
