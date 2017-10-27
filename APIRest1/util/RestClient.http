@@ -53,8 +53,8 @@ GET http://localhost:8100/flights
 POST http://localhost:8100/flights
 
 {
-	"airplanemodel": "Donsho",
-	"airplanenumber": "55213",
+	"airplanemodel": "ZXC",
+	"airplanenumber": "ZXCXXX",
 	"price": 1232,
 	"depart": {
 		"country": "Ecuadro",

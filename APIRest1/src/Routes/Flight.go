@@ -58,8 +58,6 @@ func GetFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Para
 //PostFlight Inserta un nuevo vuelo
 func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	session := DB.GetDbSession()
-
 	//obtener el json y lo guardo en body
 	var obj Entities.Flight
 	body, err := ioutil.ReadAll(req.Body)
@@ -70,16 +68,8 @@ func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	//parseo de json a flight, nose si parsea mas de 1 objeto..., seguro con un for o algo
 	json.Unmarshal(body, &obj)
 
-	//inserto en la bd
-	c := session.DB("lushflydb").C("Flights")
-
-	err = c.Insert(obj)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	//Insercion en metodo generico
+	DB.InsertObj(obj, "Flights")
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
 
 	DB "../DB"
 	Entities "../Entities"
@@ -15,23 +16,22 @@ import (
 )
 
 //Get-Post-Put-Delete
+func ToIntf(s interface{}) []interface{} {
+	v := reflect.ValueOf(s)
+	// There is no need to check, we want to panic if it's not slice or array
+	intf := make([]interface{}, v.Len())
+	for i := 0; i < v.Len(); i++ {
+		intf[i] = v.Index(i).Interface()
+	}
+	return intf
+}
 
 //GetAllUser Envia todos los usuarios, formato->JSON
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	session := DB.GetDbSession() //en mayusculas pa q sea publico
-
-	//Pa' Obtener
+	//Obtener Todos los usuarios por el metodo Generico
 	var users []Entities.User
-	c := session.DB("lushflydb").C("Users")
-
-	err := c.Find(nil).Sort("-start").All(&users) //es opcional el sort
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	users = *DB.GetObjs("Users", Entities.User{}).(*[]Entities.User)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -68,6 +68,8 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	//parseo de json a User, nose si parsea mas de 1 objeto..., seguro con un for o algo
 	json.Unmarshal(body, &obj)
+
+	//Insercion en metodo generico
 	DB.InsertObj(obj, "Users")
 
 	//Respuesta

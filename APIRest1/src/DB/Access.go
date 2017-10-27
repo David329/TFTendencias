@@ -3,6 +3,7 @@ package db
 //Access to DB
 import (
 	"log"
+	"reflect"
 
 	mgo "gopkg.in/mgo.v2"
 )
@@ -18,16 +19,52 @@ func GetDbSession() *mgo.Session {
 	return session
 }
 
+//GetObjs Metodo que retorna objetos genericos;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
+func GetObjs(entitieType string, obj interface{}) interface{} {
+	session := GetDbSession()
+	defer session.Close()
+
+	var c *mgo.Collection
+	valueSlice := reflect.New(
+		reflect.MakeSlice(
+			reflect.SliceOf(
+				reflect.TypeOf(obj),
+			), 0, 0,
+		).Type(),
+	)
+
+	c = session.DB("lushflydb").C(entitieType)
+	err := c.Find(nil).Sort("-start").All(valueSlice.Interface()) //es opcional el sort
+	if err != nil {
+		panic(err)
+	}
+	return valueSlice.Interface()
+}
+
+// //GetObjs Metodo que retorna objetos genericos
+// func GetObjs(entitieType string, objs *reflect.Value) {
+// 	session := GetDbSession()
+// 	defer session.Close()
+
+// 	var c *mgo.Collection
+
+// 	c = session.DB("lushflydb").C(entitieType)
+// 	err := c.Find(nil).Sort("-start").All(objs.Interface()) //es opcional el sort
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// }
+
 //InsertObj Metodo de insercion generico
 func InsertObj(obj interface{}, entitieType string) {
 	session := GetDbSession()
+	defer session.Close()
+
 	var c *mgo.Collection
-	if entitieType == "Users" {
-		c = session.DB("lushflydb").C("Users")
-	}
+
+	c = session.DB("lushflydb").C(entitieType)
 	err := c.Insert(obj)
 	if err != nil {
 		log.Fatal(err)
 	}
-	session.Close()
 }
