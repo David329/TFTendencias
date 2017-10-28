@@ -25,6 +25,20 @@ func GetDbSession() *mgo.Session {
 	return session
 }
 
+//GetObjsx Metodo que retorna objetos genericos;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
+func GetObjsByQuery(entitieType string, obj interface{}, query interface{}) interface{} {
+	session := GetDbSession()
+	defer session.Close()
+
+	valueSlice := reflect.New(reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(obj)), 0, 0).Type())
+
+	err := session.DB(dbname).C(entitieType).Find(query).All(valueSlice.Interface()) //es opcional el sort
+	if err != nil {
+		panic(err)
+	}
+	return valueSlice.Interface()
+}
+
 //GetObjs Metodo que retorna objetos genericos;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
 func GetObjs(entitieType string, obj interface{}) interface{} {
 	session := GetDbSession()

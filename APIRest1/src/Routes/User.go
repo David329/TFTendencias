@@ -10,7 +10,21 @@ import (
 	DB "../DB"
 	Entities "../Entities"
 	"github.com/julienschmidt/httprouter"
+	"gopkg.in/mgo.v2/bson"
 )
+
+//GetAllUserByLastName Metodo creado para probar el metodo getByQuery, la consulta debe estar en minuscula
+func GetAllUserByLastName(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+
+	//Obtener Todos los usuarios por el metodo Generico
+	var users []Entities.User
+	users = *DB.GetObjsByQuery("Users", Entities.User{}, bson.M{"lastname": "Silvaxxxx"}).(*[]Entities.User)
+
+	// //Respuesta
+	wr.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(wr).Encode(users)
+
+}
 
 //GetAllUser Envia todos los usuarios, formato->JSON
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
