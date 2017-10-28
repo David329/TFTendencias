@@ -19,19 +19,9 @@ import (
 //GetAllBooking Envia todos las reservar, formato->JSON
 func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	session := DB.GetDbSession() //en mayusculas pa q sea publico
-
-	//Pa' Obtener
+	//Obtener Todas las reservas por el metodo Generico
 	var bookings []Entities.Booking
-	c := session.DB("lushflydb").C("Bookings")
-
-	err := c.Find(nil).Sort("-start").All(&bookings) //es opcional el sort
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	bookings = *DB.GetObjs("Bookings", Entities.Booking{}).(*[]Entities.Booking)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -40,15 +30,10 @@ func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Param
 
 //GetBookingByID Envia la reserva por ID, formato->JSON
 func GetBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	session := DB.GetDbSession()
-	var booking Entities.Booking
 
-	c := session.DB("lushflydb").C("Bookings")
+	booking := &Entities.Booking{}
 
-	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&booking)
-
-	//cerrramos sesion
-	session.Close()
+	DB.GetObjsByID("Bookings", ps.ByName("id"), &booking)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -168,22 +153,7 @@ func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 //DeleteBookingByID Elimina un usuario por ID, formato->JSON
 func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
-	session := DB.GetDbSession()
-
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
-
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Bookings")
-
-	err := c.RemoveId(bson.ObjectIdHex(reqID))
-
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	DB.DeleteObjByID("Bookings", ps.ByName("id"))
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")

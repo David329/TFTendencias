@@ -6,25 +6,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"reflect"
 
 	DB "../DB"
 	Entities "../Entities"
 	"github.com/julienschmidt/httprouter"
-
-	"gopkg.in/mgo.v2/bson"
 )
-
-//Get-Post-Put-Delete
-func ToIntf(s interface{}) []interface{} {
-	v := reflect.ValueOf(s)
-	// There is no need to check, we want to panic if it's not slice or array
-	intf := make([]interface{}, v.Len())
-	for i := 0; i < v.Len(); i++ {
-		intf[i] = v.Index(i).Interface()
-	}
-	return intf
-}
 
 //GetAllUser Envia todos los usuarios, formato->JSON
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -33,7 +19,7 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 	var users []Entities.User
 	users = *DB.GetObjs("Users", Entities.User{}).(*[]Entities.User)
 
-	//Respuesta
+	// //Respuesta
 	wr.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(wr).Encode(users)
 
@@ -41,15 +27,10 @@ func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) 
 
 //GetUserByID Envia El usuario por ID, formato->JSON
 func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	session := DB.GetDbSession()
-	var user Entities.User
 
-	c := session.DB("lushflydb").C("Users")
+	user := &Entities.User{}
 
-	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&user)
-
-	//cerrramos sesion
-	session.Close()
+	DB.GetObjsByID("Users", ps.ByName("id"), &user)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -70,7 +51,7 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	json.Unmarshal(body, &obj)
 
 	//Insercion en metodo generico
-	DB.InsertObj(obj, "Users")
+	DB.InsertObj("Users", obj)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -79,8 +60,6 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 //PutUserByID Actualiza un Documento User
 func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-
-	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
 	var obj Entities.User
@@ -91,20 +70,7 @@ func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 
 	//parseo de json a user
 	json.Unmarshal(body, &obj)
-
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
-
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Users")
-
-	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	DB.UpdateObjByID("Users", ps.ByName("id"), obj)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")
@@ -114,22 +80,7 @@ func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 //DeleteUserByID Elimina un usuario por ID, formato->JSON
 func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
-	session := DB.GetDbSession()
-
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
-
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Users")
-
-	err := c.RemoveId(bson.ObjectIdHex(reqID))
-
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	DB.DeleteObjByID("Users", ps.ByName("id"))
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")

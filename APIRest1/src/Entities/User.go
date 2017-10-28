@@ -11,5 +11,5 @@ type User struct {
 	PassportNumber string        `bson:"passportnumber"`
 	Email          string        `bson:"email"`
 	Password       string        `bson:"password"`
-	PersonalCard   Payment
+	PersonalCard   Payment       `bson:"personalcard"`
 }

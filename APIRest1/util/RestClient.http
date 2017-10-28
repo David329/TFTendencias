@@ -24,26 +24,27 @@ POST http://localhost:8100/users
 }
 
 #PUT
-PUT http://localhost:8100/users/(?id)
+PUT http://localhost:8100/users/59e5aaa9c2916a913fe3c6fb
 
 {
-    "firstname": "ffffcsdsd",
-    "lastname": "xtuki",
-    "passporttype": "DNI",
-    "passportnumber": "434",
-    "email": "david@gmail.com",
-    "password": "iksdi",
-    "personalcard": {
-        "card": "Visa",
-        "cardnumber": "2323",
-        "csc": "2232323",
-        "total": 2332,
-        "expirationdate": "23/21/1923"
-    }
+  "ID": "59e5aaa9c2916a913fe3c6fb",
+  "FirstName": "David",
+  "LastName": "Silvaxxxx",
+  "PassportType": "DNI",
+  "PassportNumber": "72721611",
+  "Email": "davidsilva3290@gmail.com",
+  "Password": "Kazeia",
+  "PersonalCard": {
+    "Card": "MasterLusho",
+    "CardNumber": "871258811",
+    "CSC": "663",
+    "Total": 79871,
+    "ExpirationDate": "23/12/2022"
+  }
 }
 
 #Delete
-DELETE http://localhost:8100/users/(?id)
+DELETE http://localhost:8100/users/59f2b52ced43f29bebbeb142
 
 ###Flights
 #GET
