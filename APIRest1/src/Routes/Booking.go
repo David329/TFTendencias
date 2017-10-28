@@ -10,8 +10,6 @@ import (
 	DB "../DB"
 	Entities "../Entities"
 	"github.com/julienschmidt/httprouter"
-
-	"gopkg.in/mgo.v2/bson"
 )
 
 //Get-Post-Put-Delete
@@ -42,7 +40,6 @@ func GetBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 //PostBooking Inserta un nuevo vuelo
 func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
 	var booking Entities.Booking
@@ -55,12 +52,8 @@ func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params)
 	json.Unmarshal(body, &booking)
 
 	//Obtenemos el objeto flight de la reserva, para actualizar su asiento del usuario
-	var flight Entities.Flight
-	c := session.DB("lushflydb").C("Flights")
-	err = c.FindId(bson.ObjectIdHex(booking.FlightID)).One(&flight)
-	if err != nil {
-		panic(err)
-	}
+	flight := &Entities.Flight{}
+	DB.GetObjsByID("Flights", booking.FlightID, &flight)
 
 	wr.Header().Set("Content-Type", "application/json")
 
@@ -70,46 +63,24 @@ func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params)
 		//agregamos el asiento final a la lista de asientos
 		flight.Seats = append(flight.Seats, booking.PersonalSeat)
 
-		//actualizamos los asientos en el vuelo
-		err = c.UpdateId(bson.ObjectIdHex(booking.FlightID), flight)
-		if err != nil {
-			panic(err)
-		}
-
+		DB.UpdateObjByID("Flights", booking.FlightID, flight)
+		log.Println(booking.UserID)
 		//Obtenemos el objeto user de la reserva, para actualizar su monto total
-		var user Entities.User
-		c = session.DB("lushflydb").C("Users")
-		err = c.FindId(bson.ObjectIdHex(booking.UserID)).One(&user)
-		if err != nil {
-			panic(err)
-		}
+		user := &Entities.User{}
+		DB.GetObjsByID("Users", booking.UserID, &user)
 
 		//restamos el monto total por la reserva
 		user.PersonalCard.Total -= flight.Price
 
 		//actualizamos el monto total del usuario
-		err = c.UpdateId(bson.ObjectIdHex(booking.UserID), user)
-		if err != nil {
-			panic(err)
-		}
+		DB.UpdateObjByID("Users", booking.UserID, user)
 
 		//inserto en la bd de Reservas
-		c := session.DB("lushflydb").C("Bookings")
-
-		err = c.Insert(booking)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		//cerrramos sesion
-		session.Close()
+		DB.InsertObj("Bookings", booking)
 
 		//Respuesta
 		json.NewEncoder(wr).Encode("Reserva Completada")
 	} else {
-
-		//cerrramos sesion
-		session.Close()
 
 		//Respuesta
 		json.NewEncoder(wr).Encode("Este Vuelo esta lleno, Max 30 Asientos!!!")
@@ -118,8 +89,6 @@ func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params)
 
 //PutBookingByID Actualiza un Documento Booking
 func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) { //pensar si es correcto...
-
-	session := DB.GetDbSession()
 
 	//obtener el json y lo guardo en body
 	var obj Entities.Booking
@@ -130,20 +99,7 @@ func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 	//parseo de json a Booking
 	json.Unmarshal(body, &obj)
-
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
-
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Bookings")
-
-	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
+	DB.UpdateObjByID("Bookings", ps.ByName("id"), obj)
 
 	//Respuesta
 	wr.Header().Set("Content-Type", "application/json")

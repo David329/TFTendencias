@@ -116,12 +116,12 @@ GET http://localhost:8100/bookings
 POST http://localhost:8100/bookings
 
 {
-    "userid": "(?id)",
-    "flightid": "(?id)",
-    "personalseat": {
-        "userid": "(?id)",
-        "number": "33A",
-        "type": "full"
+    "UserID": "59e5aaa9c2916a913fe3c6fd",
+    "FlightID": "59e5aaa9c2916a913fe3c6fe",
+    "PersonalSeat": {
+      "UserID": "59e5aaa9c2916a913fe3c6fd",
+      "Number": "52A",
+      "Type": ""
     }
 }
 

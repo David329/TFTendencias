@@ -1,12 +1,10 @@
 ////DOCUMENTATION
 //https://godoc.org/gopkg.in/mgo.v2
 //http://www.jancarloviray.com/blog/go-mongodb-simple-example/
-//PREGUNTAR LAS CREDENCIALES DE USUARIO DE BASE DE DATOS -> ./DB/Access.go
 package main
 
 //MEJORAR:
 //  1. Pasar los parametros como direccion de memoria, para eliminar la sesion y variables
-//  2. Por ahora estamos enviando desde ./Test/SendDotNet/Send#, esto es solo de prueba, xq debe ser enviado desde el ClienteWeb.
 import (
 	"log"
 	"net/http"
