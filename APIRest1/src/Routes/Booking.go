@@ -9,109 +9,111 @@ import (
 
 	DB "../DB"
 	Entities "../Entities"
+
 	"github.com/julienschmidt/httprouter"
 )
-
-//Get-Post-Put-Delete
 
 //GetAllBooking Envia todos las reservar, formato->JSON
 func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	//Obtener Todas las reservas por el metodo Generico
-	var bookings []Entities.Booking
-	bookings = *DB.GetObjs("Bookings", Entities.Booking{}).(*[]Entities.Booking)
+	var obj []interface{}
+	DB.GetObjs("Bookings", &obj)
 
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(bookings)
+	response(&wr, &obj[0])
 }
 
 //GetBookingByID Envia la reserva por ID, formato->JSON
 func GetBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
-	booking := &Entities.Booking{}
+	var obj interface{}
 
-	DB.GetObjsByID("Bookings", ps.ByName("id"), &booking)
+	DB.GetObjsByID("Bookings", ps.ByName("id"), &obj)
 
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(booking)
+	response(&wr, &obj)
 }
 
 //PostBooking Inserta un nuevo vuelo
 func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	//obtener el json y lo guardo en body
-	var booking Entities.Booking
+	var booking interface{} = new(Entities.Booking)
+	// var booking Entities.Booking
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		log.Print(err)
 	}
-
 	//parseo de json a Booking, nose si parsea mas de 1 objeto..., seguro con un for o algo
 	json.Unmarshal(body, &booking)
 
 	//Obtenemos el objeto flight de la reserva, para actualizar su asiento del usuario
-	flight := &Entities.Flight{}
-	DB.GetObjsByID("Flights", booking.FlightID, &flight)
+	// flight := &Entities.Flight{}
+	var flight interface{}
+	var auxFlight Entities.Flight
+	DB.GetObjsByID("Flights", booking.(*Entities.Booking).FlightID, &flight)
 
-	wr.Header().Set("Content-Type", "application/json")
+	jsonString, _ := json.Marshal(flight)
+	json.Unmarshal(jsonString, &auxFlight)
 
 	//chekar si esta en el limite de asientos
-	if len(flight.Seats) <= 30 {
+	if len(auxFlight.Seats) <= 30 {
+
+		var auxUser Entities.User
+
+		//		auxFlight = flight.(Entities.Flight)
 
 		//agregamos el asiento final a la lista de asientos
-		flight.Seats = append(flight.Seats, booking.PersonalSeat)
+		auxFlight.Seats = append(auxFlight.Seats, booking.(*Entities.Booking).PersonalSeat)
 
-		DB.UpdateObjByID("Flights", booking.FlightID, flight)
-		log.Println(booking.UserID)
+		flight = auxFlight
+		DB.UpdateObjByID("Flights", booking.(*Entities.Booking).FlightID, &flight)
 		//Obtenemos el objeto user de la reserva, para actualizar su monto total
-		user := &Entities.User{}
-		DB.GetObjsByID("Users", booking.UserID, &user)
+		var user interface{} //= new(Entities.User)
+		// user := &Entities.User{}
+		DB.GetObjsByID("Users", booking.(*Entities.Booking).UserID, &user)
 
+		jsonString, _ := json.Marshal(user)
+		json.Unmarshal(jsonString, &auxUser)
+		log.Println("6")
 		//restamos el monto total por la reserva
-		user.PersonalCard.Total -= flight.Price
-
+		// auxUser = user.(Entities.User)
+		auxUser.PersonalCard.Total -= flight.(Entities.Flight).Price
+		log.Println("7")
+		user = auxUser
 		//actualizamos el monto total del usuario
-		DB.UpdateObjByID("Users", booking.UserID, user)
-
+		DB.UpdateObjByID("Users", booking.(*Entities.Booking).UserID, &user)
+		log.Println("8")
 		//inserto en la bd de Reservas
-		DB.InsertObj("Bookings", booking)
-
+		DB.InsertObj("Bookings", &booking)
+		log.Println("9")
 		//Respuesta
-		json.NewEncoder(wr).Encode("Reserva Completada")
+		booking = "Reserva Completada"
+		response(&wr, &booking)
 	} else {
 
 		//Respuesta
-		json.NewEncoder(wr).Encode("Este Vuelo esta lleno, Max 30 Asientos!!!")
+		booking = "Este Vuelo esta lleno, Max 30 Asientos!!!"
+		response(&wr, &booking)
 	}
 }
 
 //PutBookingByID Actualiza un Documento Booking
 func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) { //pensar si es correcto...
 
-	//obtener el json y lo guardo en body
-	var obj Entities.Booking
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Print(err)
-	}
+	var obj interface{} = new(Entities.Booking)
+	body, _ := ioutil.ReadAll(req.Body)
 
-	//parseo de json a Booking
 	json.Unmarshal(body, &obj)
-	DB.UpdateObjByID("Bookings", ps.ByName("id"), obj)
+	DB.UpdateObjByID("Bookings", ps.ByName("id"), &obj)
 
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode("Objeto Actualizado")
+	obj = "ok"
+	response(&wr, &obj)
 }
 
 //DeleteBookingByID Elimina un usuario por ID, formato->JSON
 func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
+	var obj interface{} = "ok"
 	DB.DeleteObjByID("Bookings", ps.ByName("id"))
 
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode("Objeto Eliminado")
+	response(&wr, &obj)
 }

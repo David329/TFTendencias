@@ -1,9 +1,8 @@
+//Package db allows connection with DB
 package db
 
-//Access to DB
 import (
 	"log"
-	"reflect"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -14,48 +13,58 @@ const (
 	dbname      = "lushflydb"
 )
 
-//GetDbSession retorna la session de la BD
-func GetDbSession() *mgo.Session {
-	//creacion conexion localmente con ReplicaSet, 1Primmary, 2 Slaves, con driver mgo
+//getDbSession return session of DB
+func getDbSession() *mgo.Session {
+
+	//Create connection local with ReplicaSet, 1Primmary, 2 Slaves with driver mgo
 	session, err := mgo.Dial(connections)
 	if err != nil {
 		log.Print(err)
 	}
+
+	//SetMode of behaviour of DB
 	session.SetMode(mgo.Monotonic, true)
 	return session
 }
 
-//GetObjsx Metodo que retorna objetos genericos;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
-func GetObjsByQuery(entitieType string, obj interface{}, query interface{}) interface{} {
-	session := GetDbSession()
+//getInOneObject ...
+func getInOneObject(obj *[]interface{}) {
+	var aux interface{}
+	aux = *obj
+	(*obj) = *new([]interface{})
+	(*obj) = append(*obj, aux)
+}
+
+//GetObjsByQuery return object/s given a query bson;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
+func GetObjsByQuery(entitieType string, obj *[]interface{}, query interface{}) {
+
+	//GetSession
+	session := getDbSession()
 	defer session.Close()
 
-	valueSlice := reflect.New(reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(obj)), 0, 0).Type())
-
-	err := session.DB(dbname).C(entitieType).Find(query).All(valueSlice.Interface()) //es opcional el sort
+	err := session.DB(dbname).C(entitieType).Find(query).Sort("-start").All(obj)
 	if err != nil {
 		panic(err)
 	}
-	return valueSlice.Interface()
+	getInOneObject(obj)
 }
 
 //GetObjs Metodo que retorna objetos genericos;;//PADAVID: ->creo q en ves de pasar ese string podriamos gettypestring, lo malo q tiraria User y no Users; pa la proxxx
-func GetObjs(entitieType string, obj interface{}) interface{} {
-	session := GetDbSession()
+func GetObjs(entitieType string, obj *[]interface{}) {
+	session := getDbSession()
 	defer session.Close()
 
-	valueSlice := reflect.New(reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(obj)), 0, 0).Type())
-
-	err := session.DB(dbname).C(entitieType).Find(nil).Sort("-start").All(valueSlice.Interface()) //es opcional el sort
+	err := session.DB(dbname).C(entitieType).Find(nil).Sort("-start").All(obj)
 	if err != nil {
 		panic(err)
 	}
-	return valueSlice.Interface()
+
+	getInOneObject(obj)
 }
 
 //GetObjsByID ...
-func GetObjsByID(entitieType string, id string, obj interface{}) {
-	session := GetDbSession()
+func GetObjsByID(entitieType string, id string, obj *interface{}) {
+	session := getDbSession()
 	defer session.Close()
 
 	err := session.DB(dbname).C(entitieType).FindId(bson.ObjectIdHex(id)).One(obj)
@@ -66,8 +75,8 @@ func GetObjsByID(entitieType string, id string, obj interface{}) {
 }
 
 //InsertObj Metodo de insercion generico
-func InsertObj(entitieType string, obj interface{}) {
-	session := GetDbSession()
+func InsertObj(entitieType string, obj *interface{}) {
+	session := getDbSession()
 	defer session.Close()
 
 	err := session.DB(dbname).C(entitieType).Insert(obj)
@@ -78,8 +87,8 @@ func InsertObj(entitieType string, obj interface{}) {
 }
 
 //UpdateObjByID ...
-func UpdateObjByID(entitieType string, id string, obj interface{}) {
-	session := GetDbSession()
+func UpdateObjByID(entitieType string, id string, obj *interface{}) {
+	session := getDbSession()
 	defer session.Close()
 
 	err := session.DB(dbname).C(entitieType).UpdateId(bson.ObjectIdHex(id), obj)
@@ -91,7 +100,7 @@ func UpdateObjByID(entitieType string, id string, obj interface{}) {
 
 //DeleteObjByID ...
 func DeleteObjByID(entitieType string, id string) {
-	session := GetDbSession()
+	session := getDbSession()
 	defer session.Close()
 
 	err := session.DB(dbname).C(entitieType).RemoveId(bson.ObjectIdHex(id))

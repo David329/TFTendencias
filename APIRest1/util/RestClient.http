@@ -2,14 +2,14 @@
 #(?id)= ingresar id manual
 ###Users
 #GET
-GET http://localhost:8100/users
+GET http://localhost:8100/users/
 
 #POST
 POST http://localhost:8100/users
 
 {
-    "firstname": "VVVVVV",
-    "lastname": "VVVVVVVV",
+    "firstname": "xxxx",
+    "lastname": "zxczxcz",
     "passporttype": "VVVVVV",
     "passportnumber": "VVVVVVV",
     "email": "lusho@gmail.com",
@@ -24,31 +24,31 @@ POST http://localhost:8100/users
 }
 
 #PUT
-PUT http://localhost:8100/users/59e5aaa9c2916a913fe3c6fb
+PUT http://localhost:8100/users/59f57107a369c057230bbda2
 
 {
-  "ID": "59e5aaa9c2916a913fe3c6fb",
-  "FirstName": "David",
-  "LastName": "Silvaxxxx",
-  "PassportType": "DNI",
-  "PassportNumber": "72721611",
-  "Email": "davidsilva3290@gmail.com",
-  "Password": "Kazeia",
-  "PersonalCard": {
-    "Card": "MasterLusho",
-    "CardNumber": "871258811",
-    "CSC": "663",
-    "Total": 79871,
-    "ExpirationDate": "23/12/2022"
-  }
+	"ID": "59f57107a369c057230bbda2",
+    "firstname": "kiikikiki",
+    "lastname": "ZZZZZZ",
+    "passporttype": "VVVVVV",
+    "passportnumber": "VVVVVVV",
+    "email": "lusho@gmail.com",
+    "password": "lss",
+    "personalcard": {
+        "card": "Visa",
+        "cardnumber": "4423",
+        "csc": "663",
+        "total": 433,
+        "expirationdate": "23/21/1623"
+    }
 }
 
 #Delete
-DELETE http://localhost:8100/users/59f2b52ced43f29bebbeb142
+DELETE http://localhost:8100/users/59f57107a369c057230bbda2
 
 ###Flights
 #GET
-GET http://localhost:8100/flights
+GET http://localhost:8100/flights/
 
 #POST
 POST http://localhost:8100/flights
@@ -73,10 +73,10 @@ POST http://localhost:8100/flights
 }
 
 #PUT
-PUT http://localhost:8100/flights/(?id)
+PUT http://localhost:8100/flights/59f57391a369c057230bbda3
 
 {
-	"airplanemodel": "sadasdusho",
+	"airplanemodel": "jnsdfjnsjfn",
 	"airplanenumber": "2213",
 	"price": 32432,
 	"depart": {
@@ -106,7 +106,7 @@ PUT http://localhost:8100/flights/(?id)
 }
 
 #Delete
-DELETE http://localhost:8100/flights/(?id)
+DELETE http://localhost:8100/flights/59f57409a369c057230bbda4
 
 ###Bookings
 #GET
@@ -116,12 +116,12 @@ GET http://localhost:8100/bookings
 POST http://localhost:8100/bookings
 
 {
-    "UserID": "59e5aaa9c2916a913fe3c6fd",
+    "UserID": "59e5aaa9c2916a913fe3c6fb",
     "FlightID": "59e5aaa9c2916a913fe3c6fe",
     "PersonalSeat": {
-      "UserID": "59e5aaa9c2916a913fe3c6fd",
-      "Number": "52A",
-      "Type": ""
+      "UserID": "59e5aaa9c2916a913fe3c6fb",
+      "Number": "XXXxx",
+      "Type": "zxzczxc"
     }
 }
 
