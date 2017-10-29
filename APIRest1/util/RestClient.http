@@ -8,9 +8,9 @@ GET http://localhost:8100/users/
 POST http://localhost:8100/users
 
 {
-    "firstname": "xxxx",
-    "lastname": "zxczxcz",
-    "passporttype": "VVVVVV",
+    "firstname": "peraltuksid",
+    "lastname": "peraltuksid",
+    "passporttype": "peraltuksid",
     "passportnumber": "VVVVVVV",
     "email": "lusho@gmail.com",
     "password": "lss",
@@ -44,7 +44,7 @@ PUT http://localhost:8100/users/59f57107a369c057230bbda2
 }
 
 #Delete
-DELETE http://localhost:8100/users/59f57107a369c057230bbda2
+DELETE http://localhost:8100/users/59f62e21461870a40afb8e6b
 
 ###Flights
 #GET

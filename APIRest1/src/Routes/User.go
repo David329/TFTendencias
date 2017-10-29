@@ -1,4 +1,4 @@
-//Package routes allows methods for Model User
+//Package routes allow methods for Model User
 package routes
 
 import (
@@ -22,64 +22,79 @@ func response(wr *http.ResponseWriter, obj *interface{}) {
 }
 
 //GetAllUserByLastName allow test GenericMethod -> GetObjsByQuery
-func GetAllUserByLastName(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func GetAllUserByLastName(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj []interface{}
 	DB.GetObjsByQuery("Users", &obj, bson.M{"lastname": "Silvaxxxx"})
 
+	//Response ok or error
 	response(&wr, &obj[0])
 }
 
-//GetAllUser Return All Users
-func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+//GetAllUser Return All Objects
+func GetAllUser(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj []interface{}
 	DB.GetObjs("Users", &obj)
 
+	//Response ok or error
 	response(&wr, &obj[0])
 }
 
-//GetUserByID Return User ByID
-func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//GetUserByID Return object ByID
+func GetUserByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj interface{}
 	DB.GetObjsByID("Users", ps.ByName("id"), &obj)
 
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//PostUser Inserta un nuevo vuelo
+//PostUser Insert a new Object
 func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
+	//New Obj like Entities.User
 	var obj interface{} = new(Entities.User)
 
+	//Read Body of Form, then convert json binary to Struct previously defined
 	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
 
+	//Insert obj, then return through pointer
 	DB.InsertObj("Users", &obj)
 
-	obj = "ok"
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//PutUserByID Actualiza un Documento User
+//PutUserByID Update a Object
 func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
+	//New Obj like Entities.User
 	var obj interface{} = new(Entities.User)
-	body, _ := ioutil.ReadAll(req.Body)
 
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
+
+	//Update obj, then return through pointer
 	DB.UpdateObjByID("Users", ps.ByName("id"), &obj)
 
-	obj = "ok"
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//DeleteUserByID Elimina un usuario por ID, formato->JSON
-func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteUserByID Delete object by ID
+func DeleteUserByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
-	var obj interface{} = "ok"
-	DB.DeleteObjByID("Users", ps.ByName("id"))
+	//Delete object depending Model's ID of url, then return through pointer
+	var obj interface{} = ps.ByName("id")
+	DB.DeleteObjByID("Users", &obj)
 
+	//Response ok or error
 	response(&wr, &obj)
 }

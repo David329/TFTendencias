@@ -1,10 +1,9 @@
+//Package routes allow methods for Model Booking
 package routes
 
-//Restful - Booking
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	DB "../DB"
@@ -13,107 +12,104 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-//GetAllBooking Envia todos las reservar, formato->JSON
-func GetAllBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+//GetAllBooking Return All Objects
+func GetAllBooking(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj []interface{}
 	DB.GetObjs("Bookings", &obj)
 
 	response(&wr, &obj[0])
 }
 
-//GetBookingByID Envia la reserva por ID, formato->JSON
-func GetBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//GetBookingByID Return object ByID
+func GetBookingByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj interface{}
-
 	DB.GetObjsByID("Bookings", ps.ByName("id"), &obj)
 
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//PostBooking Inserta un nuevo vuelo
+//PostBooking Insert a new Object
 func PostBooking(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	//obtener el json y lo guardo en body
+	//New Obj like Entities.Booking
 	var booking interface{} = new(Entities.Booking)
-	// var booking Entities.Booking
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Print(err)
-	}
-	//parseo de json a Booking, nose si parsea mas de 1 objeto..., seguro con un for o algo
+
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &booking)
 
-	//Obtenemos el objeto flight de la reserva, para actualizar su asiento del usuario
-	// flight := &Entities.Flight{}
+	//Get Flight through pointer, New auxFlight to parse from json to Entities.Flight. Objective: Update Seats
 	var flight interface{}
 	var auxFlight Entities.Flight
 	DB.GetObjsByID("Flights", booking.(*Entities.Booking).FlightID, &flight)
-
 	jsonString, _ := json.Marshal(flight)
 	json.Unmarshal(jsonString, &auxFlight)
 
-	//chekar si esta en el limite de asientos
 	if len(auxFlight.Seats) <= 30 {
 
-		var auxUser Entities.User
-
-		//		auxFlight = flight.(Entities.Flight)
-
-		//agregamos el asiento final a la lista de asientos
+		//Update Seats of the flight
 		auxFlight.Seats = append(auxFlight.Seats, booking.(*Entities.Booking).PersonalSeat)
 
+		//Reuse inteface from auxFlight to oldFlight, then update the flight in DB
 		flight = auxFlight
 		DB.UpdateObjByID("Flights", booking.(*Entities.Booking).FlightID, &flight)
-		//Obtenemos el objeto user de la reserva, para actualizar su monto total
-		var user interface{} //= new(Entities.User)
-		// user := &Entities.User{}
-		DB.GetObjsByID("Users", booking.(*Entities.Booking).UserID, &user)
 
+		//Get User through pointer, New auxUser to parse from json to Entities.User. Objective: Update Total Money of User
+		var user interface{}
+		var auxUser Entities.User
+		DB.GetObjsByID("Users", booking.(*Entities.Booking).UserID, &user)
 		jsonString, _ := json.Marshal(user)
 		json.Unmarshal(jsonString, &auxUser)
-		log.Println("6")
-		//restamos el monto total por la reserva
-		// auxUser = user.(Entities.User)
+
+		//Update Total mount given price of flight
 		auxUser.PersonalCard.Total -= flight.(Entities.Flight).Price
-		log.Println("7")
+
+		//Reuse inteface from auxUser to oldUser, then update the User in DB
 		user = auxUser
-		//actualizamos el monto total del usuario
 		DB.UpdateObjByID("Users", booking.(*Entities.Booking).UserID, &user)
-		log.Println("8")
-		//inserto en la bd de Reservas
+
+		//Insert obj, then return through pointer
 		DB.InsertObj("Bookings", &booking)
-		log.Println("9")
-		//Respuesta
-		booking = "Reserva Completada"
+
+		//Response ok or error
 		response(&wr, &booking)
 	} else {
 
-		//Respuesta
+		//Response customized or error
 		booking = "Este Vuelo esta lleno, Max 30 Asientos!!!"
 		response(&wr, &booking)
 	}
 }
 
-//PutBookingByID Actualiza un Documento Booking
+//PutBookingByID Update a Object
 func PutBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) { //pensar si es correcto...
 
+	//New Obj like Entities.Booking
 	var obj interface{} = new(Entities.Booking)
-	body, _ := ioutil.ReadAll(req.Body)
 
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
+
+	//Update obj, then return through pointer
 	DB.UpdateObjByID("Bookings", ps.ByName("id"), &obj)
 
-	obj = "ok"
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//DeleteBookingByID Elimina un usuario por ID, formato->JSON
-func DeleteBookingByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteBookingByID Delete object by ID
+func DeleteBookingByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
-	var obj interface{} = "ok"
-	DB.DeleteObjByID("Bookings", ps.ByName("id"))
+	//Delete object depending Model's ID of url, then return through pointer
+	var obj interface{} = ps.ByName("id")
+	DB.DeleteObjByID("Bookings", &obj)
 
+	//Response ok or error
 	response(&wr, &obj)
 }

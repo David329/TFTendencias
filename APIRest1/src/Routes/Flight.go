@@ -1,6 +1,6 @@
+//Package routes allow methods for Model Flight
 package routes
 
-//Restful - Flight
 import (
 	"encoding/json"
 	"io/ioutil"
@@ -12,57 +12,69 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-//GetAllFlight Envia todos los vuelos, formato->JSON
-func GetAllFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+//GetAllFlight Return All Objects
+func GetAllFlight(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj []interface{}
 	DB.GetObjs("Flights", &obj)
 
+	//Response ok or error
 	response(&wr, &obj[0])
 }
 
-//GetFlightByID Envia El vuelo por ID, formato->JSON
-func GetFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//GetFlightByID Return object ByID
+func GetFlightByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
+	//Return through pointer and save in obj
 	var obj interface{}
-
 	DB.GetObjsByID("Flights", ps.ByName("id"), &obj)
-	// jsonString, _ := json.Marshal(obj)
-	// log.Println(string(jsonString))
+
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//PostFlight Inserta un nuevo vuelo
+//PostFlight Insert a new Object
 func PostFlight(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
+	//New Obj like Entities.Flight
 	var obj interface{} = new(Entities.Flight)
-	body, _ := ioutil.ReadAll(req.Body)
 
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
+
+	//Insert obj, then return through pointer
 	DB.InsertObj("Flights", &obj)
 
-	obj = "ok"
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//PutFlightByID Actualiza un Documento Flight
+//PutFlightByID Update a Object
 func PutFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
+	//New Obj like Entities.Flight
 	var obj interface{} = new(Entities.Flight)
-	body, _ := ioutil.ReadAll(req.Body)
 
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
+
+	//Update obj, then return through pointer
 	DB.UpdateObjByID("Flights", ps.ByName("id"), &obj)
 
-	obj = "ok"
+	//Response ok or error
 	response(&wr, &obj)
 }
 
-//DeleteFlightByID Elimina un usuario por ID, formato->JSON
-func DeleteFlightByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteFlightByID Delete object by ID
+func DeleteFlightByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
-	var obj interface{} = "ok"
-	DB.DeleteObjByID("Flights", ps.ByName("id"))
+	//Delete object depending Model's ID of url, then return through pointer
+	var obj interface{} = ps.ByName("id")
+	DB.DeleteObjByID("Flights", &obj)
 
+	//Response ok or error
 	response(&wr, &obj)
 }
