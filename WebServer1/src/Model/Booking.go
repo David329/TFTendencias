@@ -2,8 +2,8 @@ package model
 
 // Booking Entitie.
 type Booking struct {
-	ID           string //en este caso no es bson, xq viene del json no de mgo
-	UserID       string //se deberia eliminar, cuando tng tiempo lo pienso
-	FlightID     string
-	PersonalSeat Seat
+	ID           string `json:"_id"`
+	UserID       string `json:"userid"`
+	FlightID     string `json:"flightid"`
+	PersonalSeat Seat   `json:"personalseat"`
 }

@@ -2,11 +2,11 @@ package model
 
 // Flight Entitie.
 type Flight struct {
-	ID             string //en este caso no es bson, xq viene del json no de mgo
-	AirplaneModel  string
-	AirplaneNumber string
-	Price          float32
-	Depart         Departure
-	Destin         Destination
-	Seats          []Seat
+	ID             string      `json:"_id"`
+	AirplaneModel  string      `json:"airplanemodel"`
+	AirplaneNumber string      `json:"airplanenumber"`
+	Price          float32     `json:"price"`
+	Depart         Departure   `json:"depart"`
+	Destin         Destination `json:"destin"`
+	Seats          []Seat      `json:"seats"`
 }

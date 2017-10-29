@@ -51,7 +51,7 @@ func copy(w io.WriteCloser, r io.Reader) {
 }
 
 //handleConnection this method select the next server(+-condition) to send the data
-func handleConnection(us net.Conn, servers *[]string) {
+func handleConnection(us *net.Conn, servers *[]string) {
 
 	//if balanceCondition+1 equals activeServers, then reset the balanceCondition, else balanceCondition++
 	if (balanceCondition + 1) == activeServers {
@@ -63,14 +63,14 @@ func handleConnection(us net.Conn, servers *[]string) {
 	//Get path of the next server to send the data
 	ds, err := net.Dial("tcp", (*servers)[balanceCondition])
 	if err != nil {
-		us.Close()
+		(*us).Close()
 		log.Printf("failed to dial %s: %s", (*servers)[balanceCondition], err)
 		return
 	}
 
 	//Send data to next server, then response data, like mirror
-	go copy(ds, us)
-	go copy(us, ds)
+	go copy(ds, (*us))
+	go copy((*us), ds)
 }
 
 //turnThirdServer this method allow run the third server if the two active are very overLoaded
@@ -114,7 +114,7 @@ func main() {
 				continue
 			}
 
-			go handleConnection(conn, &hostsServers)
+			go handleConnection(&conn, &hostsServers)
 		}
 	}
 

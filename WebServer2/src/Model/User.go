@@ -2,12 +2,12 @@ package model
 
 // User Entitie.
 type User struct {
-	ID             string //en este caso no es bson, xq viene del json no de mgo
-	FirstName      string
-	LastName       string
-	PassportType   string
-	PassportNumber string
-	Email          string
-	Password       string
-	PersonalCard   Payment
+	ID             string  `json:"_id"`
+	FirstName      string  `json:"firstname"`
+	LastName       string  `json:"lastname"`
+	PassportType   string  `json:"passporttype"`
+	PassportNumber string  `json:"passportnumber"`
+	Email          string  `json:"email"`
+	Password       string  `json:"password"`
+	PersonalCard   Payment `json:"personalcard"`
 }
