@@ -4,12 +4,12 @@ import "gopkg.in/mgo.v2/bson"
 
 // User Entitie.
 type User struct {
-	ID             bson.ObjectId `bson:"_id,omitempty"` //bson id, omitempty permite vacios en id
-	FirstName      string        `bson:"firstname"`
-	LastName       string        `bson:"lastname"`
-	PassportType   string        `bson:"passporttype"`
-	PassportNumber string        `bson:"passportnumber"`
-	Email          string        `bson:"email"`
-	Password       string        `bson:"password"`
-	PersonalCard   Payment       `bson:"personalcard"`
+	ID             bson.ObjectId `bson:"_id,omitempty" json:"_id"` //bson id, omitempty permite vacios en id
+	FirstName      string        `bson:"firstname" json:"firstname"`
+	LastName       string        `bson:"lastname" json:"lastname"`
+	PassportType   string        `bson:"passporttype" json:"passporttype"`
+	PassportNumber string        `bson:"passportnumber" json:"passportnumber"`
+	Email          string        `bson:"email" json:"email"`
+	Password       string        `bson:"password" json:"password"`
+	PersonalCard   Payment       `bson:"personalcard" json:"personalcard"`
 }

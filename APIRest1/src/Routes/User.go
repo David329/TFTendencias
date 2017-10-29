@@ -1,6 +1,6 @@
+//Package routes allows methods for Model User
 package routes
 
-//Restful - User
 import (
 	"encoding/json"
 	"io/ioutil"
@@ -9,33 +9,45 @@ import (
 
 	DB "../DB"
 	Entities "../Entities"
+
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2/bson"
 )
 
-//GetAllUserByLastName Metodo creado para probar el metodo getByQuery, la consulta debe estar en minuscula
-func GetAllUserByLastName(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+//response
+func response(wr *http.ResponseWriter, obj *interface{}) {
 
-	//Obtener Todos los usuarios por el metodo Generico
-	var users []Entities.User
-	users = *DB.GetObjsByQuery("Users", Entities.User{}, bson.M{"lastname": "Silvaxxxx"}).(*[]Entities.User)
-
-	// //Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(users)
-
+	//response in json format
+	(*wr).Header().Set("Content-Type", "application/json")
+	json.NewEncoder(*wr).Encode(*obj)
 }
 
-//GetAllUser Envia todos los usuarios, formato->JSON
+//GetAllUserByLastName allow test GenericMethod -> GetObjsByQuery
+func GetAllUserByLastName(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+
+	//Get All Users where lastname is X by GenericMethod
+	// var users []Entities.User
+	var users interface{}
+	users = *DB.GetObjsByQuery("Users", Entities.User{}, bson.M{"lastname": "Silvaxxxx"}).(*[]Entities.User)
+
+	//Response
+	//	wr.Header().Set("Content-Type", "application/json")
+	//	json.NewEncoder(wr).Encode(users)
+	response(&wr, &users)
+}
+
+//GetAllUser Return All Users -> JSON
 func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 	//Obtener Todos los usuarios por el metodo Generico
-	var users []Entities.User
+	// var users []Entities.User
+	var users interface{}
 	users = *DB.GetObjs("Users", Entities.User{}).(*[]Entities.User)
 
-	// //Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(users)
+	//Response
+	//	wr.Header().Set("Content-Type", "application/json")
+	//	json.NewEncoder(wr).Encode(users)
+	response(&wr, &users)
 
 }
 
@@ -46,7 +58,7 @@ func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 
 	DB.GetObjsByID("Users", ps.ByName("id"), &user)
 
-	//Respuesta
+	//Response
 	wr.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(wr).Encode(user)
 }
@@ -58,7 +70,7 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var obj Entities.User
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		log.Print(err)
+		log.Fatal(err)
 	}
 
 	//parseo de json a User, nose si parsea mas de 1 objeto..., seguro con un for o algo
@@ -67,7 +79,7 @@ func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	//Insercion en metodo generico
 	DB.InsertObj("Users", obj)
 
-	//Respuesta
+	//Response
 	wr.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(wr).Encode("Objeto Insertado")
 }
@@ -79,14 +91,14 @@ func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params
 	var obj Entities.User
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		log.Print(err)
+		log.Fatal(err)
 	}
 
 	//parseo de json a user
 	json.Unmarshal(body, &obj)
 	DB.UpdateObjByID("Users", ps.ByName("id"), obj)
 
-	//Respuesta
+	//Response
 	wr.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(wr).Encode("Objeto Actualizado")
 }
@@ -96,7 +108,7 @@ func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 	DB.DeleteObjByID("Users", ps.ByName("id"))
 
-	//Respuesta
+	//Response
 	wr.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(wr).Encode("Objeto Eliminado")
 }

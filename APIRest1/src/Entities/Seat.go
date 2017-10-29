@@ -2,7 +2,7 @@ package entities
 
 // Seat Entitie.
 type Seat struct {
-	UserID string `bson:"userid"`
-	Number string `bson:"number"`
-	Type   string `bson:"firstname"`
+	UserID string `bson:"userid" json:"userid"`
+	Number string `bson:"number" json:"number"`
+	Type   string `bson:"type" json:"type"`
 }
