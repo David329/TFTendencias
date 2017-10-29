@@ -1,8 +1,6 @@
 package entities
 
-import (
-	"gopkg.in/mgo.v2/bson"
-)
+import "gopkg.in/mgo.v2/bson"
 
 // Booking Entitie.
 type Booking struct {

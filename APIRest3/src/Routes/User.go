@@ -1,147 +1,100 @@
+//Package routes allow methods for Model User
 package routes
 
-//Restful - User
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	DB "../DB"
 	Entities "../Entities"
-	"github.com/julienschmidt/httprouter"
 
+	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2/bson"
 )
 
-//Get-Post-Put-Delete
+//response through pointers, this method works for all Routes's Models
+func response(wr *http.ResponseWriter, obj *interface{}) {
 
-//GetAllUser Envia todos los usuarios, formato->JSON
-func GetAllUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-
-	session := DB.GetDbSession() //en mayusculas pa q sea publico
-
-	//Pa' Obtener
-	var users []Entities.User
-	c := session.DB("lushflydb").C("Users")
-
-	err := c.Find(nil).Sort("-start").All(&users) //es opcional el sort
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
-
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(users)
-
+	//response in json format
+	(*wr).Header().Set("Content-Type", "application/json")
+	json.NewEncoder(*wr).Encode(*obj)
 }
 
-//GetUserByID Envia El usuario por ID, formato->JSON
-func GetUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	session := DB.GetDbSession()
-	var user Entities.User
+//GetAllUserByLastName allow test GenericMethod -> GetObjsByQuery
+func GetAllUserByLastName(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 
-	c := session.DB("lushflydb").C("Users")
+	//Return through pointer and save in obj
+	var obj []interface{}
+	DB.GetObjsByQuery("Users", &obj, bson.M{"lastname": "Silvaxxxx"})
 
-	c.FindId(bson.ObjectIdHex(ps.ByName("id"))).One(&user)
-
-	//cerrramos sesion
-	session.Close()
-
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode(user)
+	//Response ok or error
+	response(&wr, &obj[0])
 }
 
-//PostUser Inserta un nuevo vuelo
+//GetAllUser Return All Objects
+func GetAllUser(wr http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+
+	//Return through pointer and save in obj
+	var obj []interface{}
+	DB.GetObjs("Users", &obj)
+
+	//Response ok or error
+	response(&wr, &obj[0])
+}
+
+//GetUserByID Return object ByID
+func GetUserByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+
+	//Return through pointer and save in obj
+	var obj interface{}
+	DB.GetObjsByID("Users", ps.ByName("id"), &obj)
+
+	//Response ok or error
+	response(&wr, &obj)
+}
+
+//PostUser Insert a new Object
 func PostUser(wr http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
-	session := DB.GetDbSession()
+	//New Obj like Entities.User
+	var obj interface{} = new(Entities.User)
 
-	//obtener el json y lo guardo en body
-	var obj Entities.User
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Print(err)
-	}
-
-	//parseo de json a User, nose si parsea mas de 1 objeto..., seguro con un for o algo
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
 
-	//inserto en la bd
-	c := session.DB("lushflydb").C("Users")
+	//Insert obj, then return through pointer
+	DB.InsertObj("Users", &obj)
 
-	err = c.Insert(obj)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
-
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode("Objeto Insertado")
+	//Response ok or error
+	response(&wr, &obj)
 }
 
-//PutUserByID Actualiza un Documento User
+//PutUserByID Update a Object
 func PutUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
-	session := DB.GetDbSession()
+	//New Obj like Entities.User
+	var obj interface{} = new(Entities.User)
 
-	//obtener el json y lo guardo en body
-	var obj Entities.User
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Print(err)
-	}
-
-	//parseo de json a user
+	//Read Body of Form, then convert json binary to Struct previously defined
+	body, _ := ioutil.ReadAll(req.Body)
 	json.Unmarshal(body, &obj)
 
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
+	//Update obj, then return through pointer
+	DB.UpdateObjByID("Users", ps.ByName("id"), &obj)
 
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Users")
-
-	err = c.UpdateId(bson.ObjectIdHex(reqID), obj)
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
-
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode("Objeto Actualizado")
+	//Response ok or error
+	response(&wr, &obj)
 }
 
-//DeleteUserByID Elimina un usuario por ID, formato->JSON
-func DeleteUserByID(wr http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+//DeleteUserByID Delete object by ID
+func DeleteUserByID(wr http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 
-	session := DB.GetDbSession()
+	//Delete object depending Model's ID of url, then return through pointer
+	var obj interface{} = ps.ByName("id")
+	DB.DeleteObjByID("Users", &obj)
 
-	//obtener el id desde la url
-	reqID := ps.ByName("id")
-
-	//obtener solo los q tienen ese id
-	c := session.DB("lushflydb").C("Users")
-
-	err := c.RemoveId(bson.ObjectIdHex(reqID))
-
-	if err != nil {
-		panic(err)
-	}
-
-	//cerrramos sesion
-	session.Close()
-
-	//Respuesta
-	wr.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(wr).Encode("Objeto Eliminado")
+	//Response ok or error
+	response(&wr, &obj)
 }

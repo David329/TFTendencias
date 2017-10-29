@@ -2,8 +2,8 @@ package entities
 
 // Destination Entitie.
 type Destination struct {
-	Country string
-	City    string
-	TD      string //departure, tndria q ser un dateTime
-	TA      string //arrival, tndria q ser un dateTime
+	Country string `bson:"country" json:"country"`
+	City    string `bson:"city" json:"city"`
+	TD      string `bson:"td" json:"td"` //departure, tndria q ser un dateTime
+	TA      string `bson:"ta" json:"ta"` //arrival, tndria q ser un dateTime
 }
