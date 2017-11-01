@@ -16,6 +16,7 @@ import Login from './containers/login/login'
 import AdministracionLayout from './containers/administracion/layout'
 import AdministracionHome from './containers/administracion/home'
 import AdministracionVuelos from './containers/administracion/vuelos'
+import VueloNuevo from './containers/administracion/nuevo_vuelo'
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
@@ -24,8 +25,9 @@ ReactDOM.render(
         <BrowserRouter>
         <div>
             <Switch>
-                <AdministracionLayout path="/administracion/home" component={AdministracionHome} />
-                <AdministracionLayout path="/administracion/vuelos" component={AdministracionVuelos} />
+                <AdministracionLayout exact path="/administracion/home" component={AdministracionHome} />
+                <AdministracionLayout exact path="/administracion/vuelos" component={AdministracionVuelos} />
+                <AdministracionLayout exact path="/administracion/vuelos/nuevo" component={VueloNuevo} />
                 <Route exact path="/" component={Login} />
             </Switch>
         </div>

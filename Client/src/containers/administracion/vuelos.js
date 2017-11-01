@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import {Card, CardActions, CardHeader} from 'material-ui/Card';
 import { Button, Icon } from 'semantic-ui-react';
@@ -62,7 +63,7 @@ class AdministracionVuelos extends Component {
                     />
                     <CardActions>
                     <div className="mb-4">
-                        <Button primary animated className="float-right" size='small'>
+                        <Button as={Link} to="/administracion/vuelos/nuevo" primary animated className="float-right" size='small'>
                             <Button.Content visible>Nuevo</Button.Content>
                             <Button.Content hidden>
                                 <Icon name='add' />
