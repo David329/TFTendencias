@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import { Button, Icon } from 'semantic-ui-react'
 import { Divider } from 'semantic-ui-react'
 import TimePicker from 'material-ui/TimePicker';
+import { ToastContainer, toast } from 'react-toastify';
 
 class VueloNuevo extends Component {
 
@@ -24,6 +25,21 @@ class VueloNuevo extends Component {
 
     componentDidMount() {
         this.props.fetchPaises();
+    }
+
+    notifySuccess() {
+        toast.success("Vuelo creado exitosamente.", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+          onClose: (childrenProps) =>  this.props.history.push("/administracion/vuelos")
+        });
+    }
+
+    notifyError() {
+        toast.error("Hubo un problema en la operación.", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000
+          });
     }
 
 
@@ -74,9 +90,9 @@ class VueloNuevo extends Component {
     onSubmit(values) {
         
         this.props.nuevoVuelo(values, () => {
-
+            this.notifySuccess();
         }, () => {
-
+            this.notifyError();
         })
     }
 
@@ -105,7 +121,7 @@ class VueloNuevo extends Component {
                                     <Field name="airplanenumber" label="Número" type="number" component={this.renderTextField}/>
                                 </div>
                                 <div className="col-sm-4">
-                                    <Field name="price" label="Precio" type="number" component={this.renderTextField}/>
+                                    <Field name="price" label="Precio" type="text" component={this.renderTextField}/>
                                 </div>
                             </div>
                             <b>Origen</b>
@@ -113,16 +129,16 @@ class VueloNuevo extends Component {
                             <div className="row mb-5 px-4">
                                 <div className="row col-sm-12">
                                     <div className="col-sm-4">
-                                        <Field name="depart.country" hintText="País" component={this.renderDropDown} options={this.renderPaises()}/>
+                                        <Field name="departCountry" hintText="País" component={this.renderDropDown} options={this.renderPaises()}/>
                                     </div>
                                     <div className="col-sm-4">
-                                        <Field name="depart.city" label="Ciudad" hintText="Ingrese ciudad" type="text" component={this.renderTextField}/>
+                                        <Field name="departCity" label="Ciudad" hintText="Ingrese ciudad" type="text" component={this.renderTextField}/>
                                     </div>       
                                     <div className="col-sm-2">
-                                    <Field name="depart.td" hintText="Ingrese TD" label="TD" type="text" component={this.renderTextField}/>
+                                    <Field name="departTD" hintText="Ingrese TD" label="TD" type="text" component={this.renderTextField}/>
                                     </div>        
                                     <div className="col-sm-2">
-                                    <Field name="depart.ta" hintText="Ingrese TA" label="TA" type="text" component={this.renderTextField}/>
+                                    <Field name="departTA" hintText="Ingrese TA" label="TA" type="text" component={this.renderTextField}/>
                                     </div>                           
                                 </div>
                             </div>
@@ -131,16 +147,16 @@ class VueloNuevo extends Component {
                             <div className="row px-4">
                                 <div className="row col-sm-12">
                                     <div className="col-sm-4">
-                                        <Field name="destin.country" hintText="País" component={this.renderDropDown} options={this.renderPaises()}/>
+                                        <Field name="destinCountry" hintText="País" component={this.renderDropDown} options={this.renderPaises()}/>
                                     </div>
                                     <div className="col-sm-4">
-                                        <Field name="destin.city" label="Ciudad" hintText="Ingrese ciudad" type="text" component={this.renderTextField}/>
+                                        <Field name="destinCity" label="Ciudad" hintText="Ingrese ciudad" type="text" component={this.renderTextField}/>
                                     </div>       
                                     <div className="col-sm-2">
-                                        <Field name="destin.td" hintText="Ingrese TD" label="TD" type="text" component={this.renderTextField}/>
+                                        <Field name="destinTD" hintText="Ingrese TD" label="TD" type="text" component={this.renderTextField}/>
                                     </div>        
                                     <div className="col-sm-2">
-                                        <Field name="destin.ta" hintText="Ingrese TA" label="TA" type="text" component={this.renderTextField}/>
+                                        <Field name="destinTA" hintText="Ingrese TA" label="TA" type="text" component={this.renderTextField}/>
                                     </div>                           
                                 </div>
                             </div>
@@ -163,7 +179,7 @@ class VueloNuevo extends Component {
                             </Button>
                         </CardActions>
                     </Card>
-                    
+                    <ToastContainer/>
                 </form>
                 </div>
             </div>

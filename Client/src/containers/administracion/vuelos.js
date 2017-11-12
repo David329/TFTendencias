@@ -8,7 +8,8 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import { fetchVuelos } from '../../actions';
+import { fetchVuelos, eliminarVuelo } from '../../actions';
+import { ToastContainer, toast } from 'react-toastify';
 
 import {
     Table,
@@ -21,13 +22,20 @@ import {
 
 class AdministracionVuelos extends Component {
 
-    
-
     componentDidMount() {
         this.props.fetchVuelos();
     }
 
+    notifySuccess() {
+        toast.success("Vuelo eliminado exitosamente.", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000
+        });
+    }
+
     renderVuelos() {
+
+        if(!this.props.vuelos) return <TableRow><TableRowColumn><div><h4>Cargando...</h4></div></TableRowColumn></TableRow>;
 
         return this.props.vuelos.map((vuelo) => {
             return (
@@ -43,9 +51,15 @@ class AdministracionVuelos extends Component {
                             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                             targetOrigin={{horizontal: 'left', vertical: 'top'}}
                         >
-                            <MenuItem value="1" primaryText="Detalle" />
-                            <MenuItem value="2" primaryText="Editar" />
-                            <MenuItem value="3" primaryText="Eliminar" />
+                            <MenuItem value="1">
+                                <div onClick={() => {console.log("holo")}}>Detalle</div>
+                            </MenuItem>
+                            <MenuItem value="2" >
+                                <div onClick={() => {console.log("holo")}}>Editar</div>
+                            </MenuItem>
+                            <MenuItem value="3">
+                                <div onClick={() => this.props.eliminarVuelo(vuelo.ID, () => { this.props.fetchVuelos(); this.notifySuccess(); })}>Eliminar</div>
+                            </MenuItem>
                         </IconMenu>
                     </TableRowColumn>
                 </TableRow>
@@ -99,6 +113,7 @@ class AdministracionVuelos extends Component {
                         </Table>
                     </CardActions>
                 </Card>
+                <ToastContainer/>
            </div>
         );
     }
@@ -108,4 +123,4 @@ function mapStateToProps(state) {
     return {vuelos: state.vuelos}
 }
 
-export default connect(mapStateToProps, { fetchVuelos })(AdministracionVuelos);
+export default connect(mapStateToProps, { fetchVuelos, eliminarVuelo })(AdministracionVuelos);

@@ -1,9 +1,9 @@
-import { FETCH_VUELOS } from "../actions"
+import { FETCH_RESERVAS } from "../actions"
 
 export default function(state = null, action) {
 
     switch (action.type) {
-        case FETCH_VUELOS:
+        case FETCH_RESERVAS:
             return action.payload.data;
             break;
     
