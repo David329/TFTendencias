@@ -2,3 +2,7 @@
 ejecutar el archivo APIRest.sh(linux, en windows con gitbash): ./RunAPIRest.sh
 	si no funciona por permisos, otorgarle de la siguiente manera:chmod +x ./RunAPIRest.sh
 	si no funciona por paquetes, instalarlos como se menciona en archivo InstallPackages.txt
+
+echo "GET http://example.com/some/page" | vegeta attack -rate=10 -duration=30s | vegeta report
+echo "GET http://localhost:8100/users" | /root/vegeta attack -rate=60000 -duration=60s | tee results.bin | /root/vegeta report
+cat results.bin | /root/vegeta report -reporter=plot > plot.html
