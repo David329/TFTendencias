@@ -15,6 +15,7 @@ var (
 	activeServers    = 2
 	balanceCondition = 0
 	hostsServers     = []string{"localhost:8100", "localhost:8200", "localhost:8300"}
+	latencyServer    = [3]int16{0, 0, 50}
 )
 
 const (
@@ -50,19 +51,30 @@ func copy(w io.WriteCloser, r io.Reader) {
 	io.Copy(w, r)
 }
 
+//reduceCost ...
+func reduceCost(index uint8) {
+	if index > 2 {
+		return
+	}
+	latencyServer[index]--
+	reduceCost(index + 1)
+}
+
 //handleConnection this method select the next server(+-condition) to send the data
 func handleConnection(us *net.Conn, servers *[]string) {
 
-	//if balanceCondition+1 equals activeServers, then reset the balanceCondition, else balanceCondition++
-	if (balanceCondition + 1) == activeServers {
-		balanceCondition = 0
-	} else {
-		balanceCondition++
+	for i := 0; i < activeServers-1; i++ {
+		if latencyServer[i+1] < latencyServer[i] {
+			balanceCondition = i + 1
+		} else {
+			balanceCondition = i
+		}
 	}
 
 	//Get path of the next server to send the data
 	ds, err := net.Dial("tcp", (*servers)[balanceCondition])
 	if err != nil {
+		latencyServer[balanceCondition] += 90
 		(*us).Close()
 		log.Printf("failed to dial %s: %s", (*servers)[balanceCondition], err)
 		return
@@ -76,16 +88,9 @@ func handleConnection(us *net.Conn, servers *[]string) {
 //turnThirdServer this method allow run the third server if the two active are very overLoaded
 func turnThirdServer() {
 
-	//if all servers are up return
-	if activeServers >= 3 {
-		return
-	}
-
-	activeServers++
-
 	//run sh command, that run bin file of Server3 compiled
 	cmdStr := "./../../APIRest3/util/RunAPIRest.sh"
-	cmd := exec.Command("/bin/sh", "-c", cmdStr)
+	cmd := exec.Command("xterm", "-e", cmdStr)
 	_, err := cmd.Output()
 	if err != nil {
 		println(err.Error())
@@ -113,12 +118,12 @@ func main() {
 				log.Printf("failed to accept: %s", err)
 				continue
 			}
-
+			go reduceCost(0)
 			go handleConnection(&conn, &hostsServers)
 		}
 	}
 
-	//Every 3 seconds do ping to next server to measure latency, if it is more than 2ms then wake up third server
+	//Every 3 seconds do ping to next server to measure latency, if it is more than 130ms then wake up third server
 	serverResponseTime := func() {
 
 		//Time 3 seconds
@@ -127,26 +132,30 @@ func main() {
 			select {
 			case <-ticker.C: //channel to handle 3 seconds
 
-				//get time noew
-				timestart := time.Now()
+				//get time now
+				timeStart := time.Now()
 
 				//ping to next server
-				resp, _ := http.Get("http://" + hostsServers[balanceCondition])
+				http.Get("http://" + hostsServers[balanceCondition])
 
-				//print the server to evaluate
-				log.Print(balanceCondition)
+				//time of ping
+				timeResp := time.Since(timeStart)
 
-				//if time is more than 2ms, wake up third server, else do nothing
-				if time.Since(timestart) > time.Duration(2)*time.Millisecond {
-					log.Print("Time more than 2ms: ")
+				//if time is more than 130ms, wake up third server, else do nothing
+				if timeResp > time.Duration(130)*time.Millisecond && activeServers < 3 {
+					activeServers++
 					go turnThirdServer()
+				}
+
+				//if time is more than 70ms, wake up third server, else do nothing
+				if timeResp > time.Duration(70)*time.Millisecond {
+					latencyServer[balanceCondition] += (int16(timeResp*time.Millisecond) / 4)
 				} else {
-					log.Print("Time less than 2ms: ")
+					latencyServer[balanceCondition] = 0
 				}
 
 				//print ping time
-				log.Println(time.Since(timestart))
-				resp.Body.Close()
+				log.Printf("Server %d: %s", balanceCondition, timeResp)
 			}
 		}
 	}
