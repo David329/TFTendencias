@@ -1,16 +1,16 @@
 #!/bin/bash
 
 #xterm turn on mongo
-xterm -e sudo service mongod start &
+# xterm -e sudo service mongod start &
 
 #xterm APIRest1
-xterm -e ./APIRest1/util/RunAPIRest.sh & 
+"C:/Program Files/Git/bin/bash.exe" -e ./APIRest1/util/RunAPIRest.sh & 
 
 #xterm APIRest2
-xterm -e ./APIRest2/util/RunAPIRest.sh &
+"C:/Program Files/Git/bin/bash.exe" -e ./APIRest2/util/RunAPIRest.sh &
 
 #xterm RunAPIRestBalancer
-xterm -e ./LoadBalancer/APIRestBalancer/RunAPIRestBalancer.sh #& 
+"C:/Program Files/Git/bin/bash.exe" -e ./LoadBalancer/APIRestBalancer/RunAPIRestBalancer.sh #& 
 
 #xterm RunWebServer1
 # xterm -e ./WebServer1/util/RunWebServer.sh & 

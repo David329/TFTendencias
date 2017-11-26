@@ -90,7 +90,7 @@ func turnThirdServer() {
 
 	//run sh command, that run bin file of Server3 compiled
 	cmdStr := "./../../APIRest3/util/RunAPIRest.sh"
-	cmd := exec.Command("xterm", "-e", cmdStr)
+	cmd := exec.Command("C:/Program Files/Git/bin/bash.exe", "-e", cmdStr)
 	_, err := cmd.Output()
 	if err != nil {
 		println(err.Error())
